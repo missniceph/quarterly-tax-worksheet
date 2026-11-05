@@ -61,6 +61,18 @@
       en: 'There are two ways to compute income tax if you’re self-employed or a professional. The 8% option is one flat rate on your gross sales/receipts and other non-operating income, and it replaces BOTH the graduated income tax and the 3% percentage tax. With the graduated option, you use the income tax table, and you also pay 3% percentage tax on a separate return (BIR Form 2551Q).',
       fil: 'Dalawa ang paraan ng pag-compute ng income tax kapag self-employed o professional ka. Ang 8% option ay isang flat rate sa gross sales/receipts mo at sa iba pang non-operating income, at ito na ang kapalit ng graduated income tax AT ng 3% percentage tax. Sa graduated option naman, gagamitin mo ang income tax table, at magbabayad ka rin ng 3% percentage tax sa hiwalay na return (BIR Form 2551Q).'
     },
+    'q.option.help3m': {
+      en: 'The 8% option only applies while your gross sales/receipts and other non-operating income stay within \u20b13,000,000 for the year. Above that, you\u2019re moved to graduated rates.',
+      fil: 'Puwede lang ang 8% option habang ang gross sales/receipts at other non-operating income mo ay hindi lumalampas sa \u20b13,000,000 sa isang taon. Kapag lumampas, lilipat ka sa graduated rates.'
+    },
+    'note.over3m': {
+      en: 'Heads up: your gross sales/receipts and other non-operating income are over \u20b13,000,000. The 8% option only applies up to \u20b13,000,000, so you may have to move to graduated rates. This worksheet doesn\u2019t compute that switch \u2014 talk to your RDO or a tax professional before filing.',
+      fil: 'Paalala: lampas na sa \u20b13,000,000 ang gross sales/receipts at other non-operating income mo. Hanggang \u20b13,000,000 lang ang 8% option, kaya baka kailangan mo nang lumipat sa graduated rates. Hindi ito kino-compute ng worksheet na ito \u2014 kumonsulta muna sa RDO mo o sa tax professional bago mag-file.'
+    },
+    'note.mixedGraduated': {
+      en: 'Mixed income on graduated rates: in your annual return, your salary and business income are added together before the tax table is applied, and the \u20b1250,000 zero-tax bracket is already used up by your salary. This worksheet only uses your business income, as the quarterly return does, so the quarterly figure may be lower than your actual share. Check with your RDO or a tax professional.',
+      fil: 'Mixed income sa graduated rates: sa annual return mo, pinagsasama ang sweldo at kita sa negosyo bago gamitin ang tax table, at nagamit na ng sweldo mo ang \u20b1250,000 na zero-tax bracket. Kita lang sa negosyo ang ginagamit ng worksheet na ito, gaya ng quarterly return, kaya baka mas mababa ang lumabas na tax kaysa sa totoong dapat. Kumonsulta sa RDO mo o sa tax professional.'
+    },
     'opt.8': { en: 'Yes, 8%', fil: 'Oo, 8%' },
     'opt.8.sub': {
       en: 'You’ll do the 1701Q worksheet only.',
@@ -220,6 +232,14 @@
       en: 'The income tax from your earlier 1701Q returns this year. Because the 1701Q is cumulative, your year-to-date tax is computed first, then what you already paid is subtracted so you don’t pay twice.',
       fil: 'Ang income tax mula sa mga naunang 1701Q mo ngayong taon. Dahil cumulative ang 1701Q, kino-compute muna ang year-to-date na tax, tapos ibabawas ang nabayaran mo na para hindi ka magbayad nang dalawang beses.'
     },
+    'f.cwtPrev1701': {
+      en: 'Creditable tax withheld in previous quarters of {year} (per BIR Form 2307)',
+      fil: 'Creditable tax withheld sa mga naunang quarter ng {year} (ayon sa BIR Form 2307 na natanggap mo para sa naunang quarters)'
+    },
+    'f.cwtPrev1701.help': {
+      en: 'Because the 1701Q is cumulative, 2307s from earlier quarters of this year still count as credits. Add up the income tax withheld on the 2307s you already claimed in your earlier 1701Q returns this year. This quarter\u2019s 2307s come next, on a separate line.',
+      fil: 'Dahil cumulative ang 1701Q, kasama pa rin bilang credit ang mga 2307 mula sa naunang quarters ngayong taon. Pagsamahin ang income tax withheld sa mga 2307 na na-claim mo na sa naunang 1701Q mo ngayong taon. Ang 2307 para sa quarter na ito ay sa susunod na tanong, hiwalay na linya.'
+    },
     'f.cwt1701': {
       en: 'Creditable tax withheld this quarter (per BIR Form 2307)',
       fil: 'Creditable tax withheld ngayong quarter (ayon sa BIR Form 2307 — buwis na kinaltas na ng client mo)'
@@ -278,6 +298,10 @@
     'row.taxDueYTD8': { en: 'Income tax due (YTD) · 8%', fil: 'Income tax due (YTD) · 8%' },
     'row.taxDueYTDgrad': { en: 'Income tax due (YTD) · graduated table', fil: 'Income tax due (YTD) · graduated table' },
     'row.prevTax': { en: 'Less: tax paid in previous quarters', fil: 'Bawas: tax na nabayaran sa naunang quarters' },
+    'row.cwtPrev1701': {
+      en: 'Less: creditable tax withheld, previous quarters (2307)',
+      fil: 'Bawas: creditable tax withheld, naunang quarters (2307)'
+    },
     'row.cwt1701': { en: 'Less: creditable tax withheld (2307)', fil: 'Bawas: creditable tax withheld (2307)' },
     'row.payable': { en: 'Tax still payable this quarter', fil: 'Tax na babayaran ngayong quarter' },
     'row.overpayment': { en: 'Overpayment', fil: 'Overpayment (sobra ang nabayaran)' },
@@ -335,6 +359,32 @@
     'ebir.credits': { en: 'Tax credits/payments', fil: 'Tax credits/payments' },
     'ebir.totalCredits': { en: 'Total tax credits/payments', fil: 'Total tax credits/payments' },
     'ebir.taxPayable': { en: 'Tax payable/(overpayment)', fil: 'Tax payable/(overpayment)' },
+    'ebir.part1': { en: 'Part I \u00b7 Background information', fil: 'Part I \u00b7 Background information' },
+    'ebir.part3': { en: 'Part III \u00b7 Total tax payable (page 1)', fil: 'Part III \u00b7 Total tax payable (page 1)' },
+    'atc.business': { en: 'if business income', fil: 'kung kita sa negosyo' },
+    'atc.profession': { en: 'if income from profession', fil: 'kung kita sa propesyon' },
+    'atc.mixed': { en: 'mixed income', fil: 'mixed income' },
+    'atc.or': { en: ' or ', fil: ' o ' },
+    'ebir.1701.item26': {
+      en: 'Tax Due (from Schedule I Item 46 or Schedule II Item 54)',
+      fil: 'Tax Due (galing sa Schedule I Item 46 o Schedule II Item 54)'
+    },
+    'ebir.1701.item27': {
+      en: 'Less: Tax Credits/Payments (from Schedule III Item 62)',
+      fil: 'Bawas: Tax Credits/Payments (galing sa Schedule III Item 62)'
+    },
+    'ebir.1701.item28': {
+      en: 'Tax Payable/(Overpayment) = Item 26 \u2212 Item 27',
+      fil: 'Tax Payable/(Overpayment) = Item 26 \u2212 Item 27'
+    },
+    'ebir.1701.penalties.note': {
+      en: 'Leave blank if filing on time. If late, ask your RDO.',
+      fil: 'Iwanang blangko kung on time ang pag-file. Kung late, magtanong sa RDO mo.'
+    },
+    'ebir.1701.item30': {
+      en: 'Total Amount Payable/(Overpayment) (same as Item 28 if filing on time)',
+      fil: 'Total Amount Payable/(Overpayment) (pareho sa Item 28 kung on time ang pag-file)'
+    },
     'ebir.attach': { en: 'Attachment', fil: 'Attachment' },
     'ebir.attach.2307': {
       en: 'BIR Form 2307 (if you have any)',

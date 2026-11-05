@@ -141,3 +141,32 @@ test('2551Q item numbers match the confirmed list', () => {
   assert.equal(RULES.items2551Q.totalAmountPayable, 'Item 24');
   assert.equal(RULES.percentageTax.atc, 'PT 010');
 });
+
+test('1701Q item numbers confirmed from page 1 of the form', () => {
+  const I = RULES.items1701Q;
+  assert.equal(I.year, 'Item 1');
+  assert.equal(I.quarter, 'Item 2');
+  assert.equal(I.atc, 'Item 8');
+  assert.equal(I.taxRateOption, 'Item 16');
+  assert.equal(I.deductionMethod, 'Item 16A');
+  assert.equal(I.partIIITaxDue, 'Item 26');
+  assert.equal(I.partIIITaxPayable, 'Item 28');
+  assert.equal(I.partIIITotalPayable, 'Item 30');
+  assert.deepEqual(RULES.atc1701Q.mixed['8'].map((x) => x.code), ['II016']);
+  assert.deepEqual(RULES.atc1701Q.pure.graduated.map((x) => x.code), ['II012', 'II014']);
+});
+
+test('2307 from previous quarters is credited on the cumulative 1701Q', () => {
+  const r = CALC.compute1701Q({
+    option: '8', incomeType: 'pure', grossSalesYTD: 700000,
+    prevQuartersTax: 3000, creditableWithheldPrev: 1000, creditableWithheld: 2000
+  });
+  assert.equal(r.totalCredits, 6000);
+  assert.equal(peso(r.payable), '₱30,000.00');
+});
+
+test('8% over 3,000,000 is flagged (computation unchanged)', () => {
+  const r = CALC.compute1701Q({ option: '8', incomeType: 'pure', grossSalesYTD: 2900000, otherIncomeYTD: 200000 });
+  assert.equal(r.overThreshold, true);
+  assert.equal(CALC.compute1701Q({ option: '8', incomeType: 'pure', grossSalesYTD: 3000000 }).overThreshold, false);
+});

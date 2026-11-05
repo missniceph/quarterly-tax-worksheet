@@ -37,6 +37,7 @@ const scenarios = [
       await amount(page, '700,000');       // gross YTD
       await amount(page, '');              // other income
       await amount(page, '4000');          // previous quarters
+      await amount(page, '');              // 2307 previous quarters
       await amount(page, '');              // 2307
       const res = await page.textContent('#res-1701');
       assert.match(res, /₱36,000\.00/);
@@ -44,7 +45,11 @@ const scenarios = [
       assert.equal(await page.$('#res-2551'), null, '8% must not show 2551Q');
       assert.match(await page.textContent('#total'), /₱32,000\.00/);
       assert.match(await page.textContent('#deadlines'), /August 15, 2026/);
-      assert.match(await page.textContent('#ebir'), /\[confirm\]/);
+      const e1 = await page.textContent('#ebir');
+      assert.match(e1, /\[confirm\]/);
+      assert.match(e1, /II015.*II017/);
+      assert.match(e1, /Item 16A|Item 16/);
+      assert.match(e1, /Item 28/);
     }
   },
   {
@@ -96,6 +101,27 @@ const scenarios = [
     }
   },
   {
+    name: 'notes-mixed-graduated-and-over-3m', lang: 'en',
+    async run(page) {
+      await choose(page, 'option', 'graduated'); await next(page);
+      await page.selectOption('#year', '2026'); await choose(page, 'quarter', '2'); await next(page);
+      await choose(page, 'incomeType', 'mixed'); await next(page);
+      await choose(page, 'deduction', 'itemized'); await next(page);
+      for (const v of ['500000', '100000', '50000', '', '1000', '500', '']) await amount(page, v);
+      assert.match(await page.textContent('#screen'), /2551Q worksheet/);
+      await amount(page, '200000'); await amount(page, '');
+      assert.ok(await page.isVisible('[data-note="note.mixedGraduated"]'));
+      assert.match(await page.textContent('#res-1701'), /previous quarters \(2307\)[\s\S]*₱500\.00/);
+      // Back to the start: switch to 8% and go over 3M
+      await page.click('#start-over');
+      await choose(page, 'option', '8'); await next(page);
+      await choose(page, 'quarter', '1'); await next(page);
+      await choose(page, 'incomeType', 'pure'); await next(page);
+      for (const v of ['3,100,000', '', '']) await amount(page, v);
+      assert.ok(await page.isVisible('[data-note="note.over3m"]'));
+    }
+  },
+  {
     name: '8pct-q4-nothing', lang: 'fil',
     async run(page) {
       await choose(page, 'option', '8'); await next(page);
@@ -117,6 +143,7 @@ const scenarios = [
       await amount(page, '');
       await amount(page, '');
       assert.match(await page.textContent('#res-1701'), /₱24,000\.00/);
+      assert.match(await page.textContent('#ebir'), /II016/);
       // switch language on the results screen
       await page.click('[data-lang="fil"]');
       assert.match(await page.textContent('#screen'), /Ang resulta mo/);
@@ -139,6 +166,7 @@ const scenarios = [
         const context = await browser.newContext({ viewport, colorScheme: theme, deviceScaleFactor: 1 });
         await context.grantPermissions(['clipboard-read', 'clipboard-write']);
         const page = await context.newPage();
+        page.on('dialog', (d) => d.accept());
         const problems = [];
         page.on('pageerror', (e) => problems.push('page error: ' + e.message));
         page.on('console', (m) => { if (m.type() === 'error') problems.push('console: ' + m.text()); });

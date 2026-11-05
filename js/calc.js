@@ -68,6 +68,7 @@
    *   deduction: 'itemized' | 'osd'       (graduated only)
    *   grossSalesYTD, costOfSalesYTD, expensesYTD, otherIncomeYTD,
    *   prevQuartersTax,                    (tax due/paid in previous quarters this year)
+   *   creditableWithheldPrev,             (BIR Form 2307, previous quarters this year)
    *   creditableWithheld                  (BIR Form 2307, this quarter)
    * }
    */
@@ -76,6 +77,7 @@
     var other = round2(num(input.otherIncomeYTD));
     var prev = round2(num(input.prevQuartersTax));
     var cwt = round2(num(input.creditableWithheld));
+    var cwtPrev = round2(num(input.creditableWithheldPrev));
     var r = {
       option: input.option,
       incomeType: input.incomeType,
@@ -107,8 +109,10 @@
     }
 
     r.prevQuartersTax = prev;
+    r.creditableWithheldPrev = cwtPrev;
     r.creditableWithheld = cwt;
-    r.totalCredits = round2(prev + cwt);
+    r.totalCredits = round2(prev + cwtPrev + cwt);
+    r.overThreshold = input.option === '8' && (gross + other) > RULES.eightPercent.threshold;
     r.net = round2(r.taxDue - r.totalCredits);
     r.payable = Math.max(0, r.net);
     r.overpayment = Math.max(0, -r.net);
