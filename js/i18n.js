@@ -182,10 +182,6 @@
     // ---------- Step 5: numbers ----------
     'section.1701Q': { en: '1701Q worksheet · Quarterly Income Tax', fil: '1701Q worksheet · Quarterly Income Tax' },
     'section.2551Q': { en: '2551Q worksheet · Quarterly Percentage Tax', fil: '2551Q worksheet · Quarterly Percentage Tax' },
-    'ytdHint': {
-      en: 'Year-to-date: January 1 to {end}, {year}',
-      fil: 'Year-to-date: Enero 1 hanggang {end}, {year}'
-    },
     'quarterHint': {
       en: 'This quarter only: {start} to {end}, {year}',
       fil: 'Itong quarter lang: {start} hanggang {end}, {year}'
@@ -206,46 +202,106 @@
       en: 'The amount can’t be negative.',
       fil: 'Hindi puwedeng negative ang halaga.'
     },
-
-    'f.grossYTD': {
-      en: 'Gross Sales/Receipts, year-to-date',
-      fil: 'Gross Sales/Receipts, year-to-date (kabuuang benta o kita bago ibawas ang gastos, mula Enero)'
+    'f.gross1701': {
+      en: 'Gross Sales/Receipts for this quarter',
+      fil: 'Gross Sales/Receipts ngayong quarter (kabuuang benta o kita bago ibawas ang gastos)'
     },
-    'f.grossYTD.help': {
-      en: 'Your total sales or receipts from your business or profession, from January 1 up to the end of this quarter, before subtracting any expenses. The 1701Q is cumulative, so use year-to-date figures — for example, for Q2, add up January to June. Don’t include your salary.',
-      fil: 'Kabuuang benta o natanggap mo mula sa negosyo o propesyon, mula Enero 1 hanggang katapusan ng quarter na ito, bago ibawas ang kahit anong gastos. Cumulative ang 1701Q, kaya year-to-date ang gamitin — halimbawa, sa Q2, pagsamahin ang Enero hanggang Hunyo. Huwag isama ang sweldo mo.'
+    'f.gross1701.help': {
+      en: 'Your total sales or receipts from your business or profession for the 3 months of this quarter only, before subtracting any expenses. Don’t include your salary. Earlier quarters come in later, through the taxable income on your last 1701Q.',
+      fil: 'Kabuuang benta o natanggap mo mula sa negosyo o propesyon sa 3 buwan ng quarter na ito lang, bago ibawas ang kahit anong gastos. Huwag isama ang sweldo mo. Ang mga naunang quarter ay papasok mamaya, sa pamamagitan ng taxable income sa huling 1701Q mo.'
     },
-    'f.costYTD': {
-      en: 'Cost of Sales/Services, year-to-date',
-      fil: 'Cost of Sales/Services, year-to-date (direktang gastos sa produkto o serbisyong ibinenta mo)'
+    'f.cost1701': {
+      en: 'Cost of Sales/Services for this quarter',
+      fil: 'Cost of Sales/Services ngayong quarter (direktang gastos sa produkto o serbisyong ibinenta mo)'
     },
-    'f.costYTD.help': {
-      en: 'The direct cost of the goods you sold or the services you provided, from January 1 up to the end of this quarter.',
-      fil: 'Ang direktang gastos sa mga produktong ibinenta mo o sa serbisyong ibinigay mo, mula Enero 1 hanggang katapusan ng quarter na ito.'
+    'f.cost1701.help': {
+      en: 'The direct cost of the goods you sold or the services you provided during this quarter.',
+      fil: 'Ang direktang gastos sa mga produktong ibinenta mo o sa serbisyong ibinigay mo ngayong quarter.'
     },
-    'f.expensesYTD': {
-      en: 'Allowable expenses, year-to-date',
-      fil: 'Allowable expenses, year-to-date (iba pang gastos sa negosyo na puwedeng ibawas)'
+    'f.expenses1701': {
+      en: 'Allowable itemized deductions for this quarter',
+      fil: 'Allowable itemized deductions ngayong quarter (iba pang gastos sa negosyo na puwedeng ibawas)'
     },
-    'f.expensesYTD.help': {
-      en: 'Your other business or professional expenses that are allowed as deductions, from January 1 up to the end of this quarter. Keep your receipts and records for these.',
-      fil: 'Iba pang gastos sa negosyo o propesyon na puwedeng ibawas, mula Enero 1 hanggang katapusan ng quarter na ito. Itago ang resibo at records mo para dito.'
+    'f.expenses1701.help': {
+      en: 'Your other business or professional expenses for this quarter that are allowed as deductions. Keep your receipts and records for these.',
+      fil: 'Iba pang gastos mo sa negosyo o propesyon ngayong quarter na puwedeng ibawas. Itago ang mga resibo at records mo para dito.'
     },
-    'f.otherYTD': {
-      en: 'Other non-operating income, year-to-date',
-      fil: 'Other non-operating income, year-to-date (iba pang kita na hindi galing sa pangunahing negosyo o propesyon mo)'
+    'f.other1701': {
+      en: 'Other non-operating income for this quarter',
+      fil: 'Other non-operating income ngayong quarter (iba pang kita na hindi galing sa pangunahing negosyo o propesyon mo)'
     },
-    'f.otherYTD.help': {
-      en: 'Income that isn’t from your main business or profession, from January 1 up to the end of this quarter. Most people have none. Don’t include your salary.',
-      fil: 'Kita na hindi galing sa pangunahing negosyo o propesyon mo, mula Enero 1 hanggang katapusan ng quarter na ito. Kadalasan, wala nito. Huwag isama ang sweldo mo.'
+    'f.other1701.help': {
+      en: 'Income this quarter that isn’t from your main business or profession. Most people have none. Don’t include your salary.',
+      fil: 'Kita ngayong quarter na hindi galing sa pangunahing negosyo o propesyon mo. Kadalasan, wala nito. Huwag isama ang sweldo mo.'
     },
+    'f.prevTaxable.8': {
+      en: 'Cumulative taxable income on your last 1701Q this year (Item 51)',
+      fil: 'Cumulative taxable income sa huling 1701Q mo ngayong taon (Item 51)'
+    },
+    'f.prevTaxable.graduated': {
+      en: 'Total taxable income to date on your last 1701Q this year (Item 45)',
+      fil: 'Total taxable income to date sa huling 1701Q mo ngayong taon (Item 45)'
+    },
+    'f.prevTaxable.help.8': {
+      en: 'Copy Item 51 from the 1701Q you filed for the previous quarter of this year ({prevQ}). This is how the 1701Q carries your earlier quarters forward — it goes into Item 50. Don’t have it? Run this worksheet for {prevQ} first.',
+      fil: 'Kopyahin ang Item 51 mula sa 1701Q na na-file mo para sa naunang quarter ngayong taon ({prevQ}). Ito ang paraan ng 1701Q para isama ang mga naunang quarter — ilalagay ito sa Item 50. Wala sa iyo? Gamitin muna ang worksheet na ito para sa {prevQ}.'
+    },
+    'f.prevTaxable.help.graduated': {
+      en: 'Copy Item 45 from the 1701Q you filed for the previous quarter of this year ({prevQ}). This is how the 1701Q carries your earlier quarters forward — it goes into Item 42. Don’t have it? Run this worksheet for {prevQ} first.',
+      fil: 'Kopyahin ang Item 45 mula sa 1701Q na na-file mo para sa naunang quarter ngayong taon ({prevQ}). Ito ang paraan ng 1701Q para isama ang mga naunang quarter — ilalagay ito sa Item 42. Wala sa iyo? Gamitin muna ang worksheet na ito para sa {prevQ}.'
+    },
+    'row.sales': { en: 'Gross sales/receipts (this quarter)', fil: 'Gross sales/receipts (ngayong quarter)' },
+    'row.other': { en: 'Add: other non-operating income', fil: 'Dagdag: other non-operating income' },
+    'row.cost': { en: 'Less: cost of sales/services', fil: 'Bawas: cost of sales/services' },
+    'row.expenses': { en: 'Less: itemized deductions', fil: 'Bawas: itemized deductions' },
+    'row.netIncome': { en: 'Net income this quarter', fil: 'Net income ngayong quarter' },
+    'row.prevTaxable': { en: 'Add: taxable income from your last 1701Q', fil: 'Dagdag: taxable income mula sa huling 1701Q mo' },
+    'row.cumulative': { en: 'Cumulative income to date', fil: 'Cumulative na kita hanggang ngayon' },
+    'row.taxDue8': { en: 'Income tax due to date · 8%', fil: 'Income tax due hanggang ngayon · 8%' },
+    'row.taxDueGrad': { en: 'Income tax due to date · graduated table', fil: 'Income tax due hanggang ngayon · graduated table' },
+    'ebir.leaveBlank': { en: 'Leave blank', fil: 'Iwanang blangko' },
+    'ebir.notCovered': {
+      en: 'Leave blank unless it applies to you (not covered by this worksheet)',
+      fil: 'Iwanang blangko maliban kung may ganito ka (hindi sakop ng worksheet na ito)'
+    },
+    'ebir.gpp': {
+      en: 'Leave blank unless you’re a partner in a GPP (not covered by this worksheet)',
+      fil: 'Iwanang blangko maliban kung partner ka sa GPP (hindi sakop ng worksheet na ito)'
+    },
+    'ebir.s1.36': { en: 'Sales/Revenues/Receipts/Fees (this quarter)', fil: 'Sales/Revenues/Receipts/Fees (ngayong quarter)' },
+    'ebir.s1.37': { en: 'Less: Cost of Sales/Services', fil: 'Bawas: Cost of Sales/Services' },
+    'ebir.s1.38': { en: 'Gross Income/(Loss) from Operation', fil: 'Gross Income/(Loss) from Operation' },
+    'ebir.s1.39': { en: 'Total Allowable Itemized Deductions', fil: 'Total Allowable Itemized Deductions' },
+    'ebir.s1.40': { en: 'Optional Standard Deduction (40% of Item 36)', fil: 'Optional Standard Deduction (40% ng Item 36)' },
+    'ebir.s1.41': { en: 'Net Income/(Loss) this quarter', fil: 'Net Income/(Loss) ngayong quarter' },
+    'ebir.s1.42': { en: 'Add: Taxable Income/(Loss) previous quarter (Item 45 of your last 1701Q)', fil: 'Dagdag: Taxable Income/(Loss) ng naunang quarter (Item 45 ng huling 1701Q mo)' },
+    'ebir.s1.43': { en: 'Non-Operating Income', fil: 'Non-Operating Income' },
+    'ebir.s1.44': { en: 'Share in income from a General Professional Partnership (GPP)', fil: 'Share sa kita mula sa General Professional Partnership (GPP)' },
+    'ebir.s1.45': { en: 'Total Taxable Income/(Loss) to date (Items 41 to 44)', fil: 'Total Taxable Income/(Loss) to date (Items 41 hanggang 44)' },
+    'ebir.s1.46': { en: 'Tax Due (graduated rates) → Part III, Item 26', fil: 'Tax Due (graduated rates) → Part III, Item 26' },
+    'ebir.s2.47': { en: 'Sales/Revenues/Receipts/Fees (this quarter)', fil: 'Sales/Revenues/Receipts/Fees (ngayong quarter)' },
+    'ebir.s2.48': { en: 'Non-Operating Income', fil: 'Non-Operating Income' },
+    'ebir.s2.49': { en: 'Total Income for the quarter (Items 47 + 48)', fil: 'Total Income ngayong quarter (Items 47 + 48)' },
+    'ebir.s2.50': { en: 'Add: Total Taxable Income previous quarter (Item 51 of your last 1701Q)', fil: 'Dagdag: Total Taxable Income ng naunang quarter (Item 51 ng huling 1701Q mo)' },
+    'ebir.s2.51': { en: 'Cumulative Taxable Income (Items 49 + 50)', fil: 'Cumulative Taxable Income (Items 49 + 50)' },
+    'ebir.s2.52': { en: 'Less: Allowable reduction of ₱250,000 (purely self-employed)', fil: 'Bawas: ₱250,000 na allowable reduction (purely self-employed)' },
+    'ebir.s2.52mixed': { en: 'Allowable reduction: none for mixed income — leave as 0', fil: 'Allowable reduction: wala para sa mixed income — 0 lang' },
+    'ebir.s2.53': { en: 'Taxable Income to date (Item 51 − Item 52)', fil: 'Taxable Income to date (Item 51 − Item 52)' },
+    'ebir.s2.54': { en: 'Tax Due (8%) → Part III, Item 26', fil: 'Tax Due (8%) → Part III, Item 26' },
+    'ebir.s3.55': { en: 'Prior Year’s Excess Credits', fil: 'Prior Year’s Excess Credits' },
+    'ebir.s3.56': { en: 'Tax Payment/s for the Previous Quarter/s', fil: 'Tax Payment/s for the Previous Quarter/s' },
+    'ebir.s3.57': { en: 'Creditable Tax Withheld for the Previous Quarter/s', fil: 'Creditable Tax Withheld for the Previous Quarter/s' },
+    'ebir.s3.58': { en: 'Creditable Tax Withheld per BIR Form 2307 for this Quarter', fil: 'Creditable Tax Withheld per BIR Form 2307 for this Quarter' },
+    'ebir.s3.59': { en: 'Amended-return payment, foreign tax credits, other credits', fil: 'Bayad sa naunang return (kung amended), foreign tax credits, iba pang credits' },
+    'ebir.s3.62': { en: 'Total Tax Credits/Payments (Items 55 to 61) → Part III, Item 27', fil: 'Total Tax Credits/Payments (Items 55 hanggang 61) → Part III, Item 27' },
+    'ebir.s3.63': { en: 'Tax Payable/(Overpayment) (tax due − Item 62) → Part III, Item 28', fil: 'Tax Payable/(Overpayment) (tax due − Item 62) → Part III, Item 28' },
     'f.prevTax': {
-      en: 'Tax due/paid in previous quarters of {year}',
-      fil: 'Tax due/paid sa mga naunang quarter ng {year} (buwis na nabayaran mo na sa naunang 1701Q)'
+      en: 'Tax you paid on earlier 1701Q returns in {year}',
+      fil: 'Tax na nabayaran mo na sa mga naunang 1701Q ngayong {year}'
     },
     'f.prevTax.help': {
-      en: 'The income tax from your earlier 1701Q returns this year. Because the 1701Q is cumulative, your year-to-date tax is computed first, then what you already paid is subtracted so you don’t pay twice.',
-      fil: 'Ang income tax mula sa mga naunang 1701Q mo ngayong taon. Dahil cumulative ang 1701Q, kino-compute muna ang year-to-date na tax, tapos ibabawas ang nabayaran mo na para hindi ka magbayad nang dalawang beses.'
+      en: 'The income tax you actually paid with your earlier 1701Q returns this year (Item 56 on the form). Because the 1701Q is cumulative, tax is computed on your income to date, then what you already paid is subtracted so you don\u2019t pay twice.',
+      fil: 'Ang income tax na talagang binayaran mo sa mga naunang 1701Q mo ngayong taon (Item 56 sa form). Dahil cumulative ang 1701Q, kino-compute ang tax sa kita mo hanggang ngayon, tapos ibabawas ang nabayaran mo na para hindi ka magbayad nang dalawang beses.'
     },
     'f.cwtPrev1701': {
       en: 'Creditable tax withheld in previous quarters of {year} (per BIR Form 2307)',
@@ -288,26 +344,20 @@
     'res.1701.title': { en: '1701Q · Quarterly Income Tax', fil: '1701Q · Quarterly Income Tax' },
     'res.2551.title': { en: '2551Q · Quarterly Percentage Tax', fil: '2551Q · Quarterly Percentage Tax' },
     'res.1701.help': {
-      en: 'The 1701Q is cumulative: tax is computed on your year-to-date income, then taxes already paid in earlier quarters and credits are subtracted.',
-      fil: 'Cumulative ang 1701Q: kino-compute ang tax sa year-to-date na kita mo, tapos ibabawas ang nabayaran na sa naunang quarters at ang credits.'
+      en: 'The 1701Q is cumulative: this quarter\u2019s income is added to the taxable income from your last 1701Q, tax is computed on the total to date, then what you\u2019ve already paid and your credits are subtracted.',
+      fil: 'Cumulative ang 1701Q: idinadagdag ang kita mo ngayong quarter sa taxable income mula sa huling 1701Q mo, kino-compute ang tax sa kabuuan hanggang ngayon, tapos ibabawas ang nabayaran mo na at ang credits mo.'
     },
     'res.2551.help': {
       en: 'The 2551Q is per quarter: 3% of this quarter’s gross sales/receipts.',
       fil: 'Per quarter ang 2551Q: 3% ng gross sales/receipts ng quarter na ito.'
     },
-    'row.grossYTD': { en: 'Gross sales/receipts (YTD)', fil: 'Gross sales/receipts (YTD)' },
-    'row.costYTD': { en: 'Less: cost of sales/services', fil: 'Bawas: cost of sales/services' },
-    'row.expensesYTD': { en: 'Less: allowable expenses', fil: 'Bawas: allowable expenses' },
     'row.osd': { en: 'Less: OSD (40% of gross)', fil: 'Bawas: OSD (40% ng gross)' },
-    'row.otherYTD': { en: 'Add: other non-operating income', fil: 'Dagdag: other non-operating income' },
     'row.reduction': { en: 'Less: ₱250,000 (purely self-employed)', fil: 'Bawas: ₱250,000 (purely self-employed)' },
     'row.noReduction': {
       en: 'No ₱250,000 reduction (mixed income)',
       fil: 'Walang ₱250,000 na bawas (mixed income)'
     },
-    'row.taxable': { en: 'Taxable income (YTD)', fil: 'Taxable income (YTD)' },
-    'row.taxDueYTD8': { en: 'Income tax due (YTD) · 8%', fil: 'Income tax due (YTD) · 8%' },
-    'row.taxDueYTDgrad': { en: 'Income tax due (YTD) · graduated table', fil: 'Income tax due (YTD) · graduated table' },
+    'row.taxable': { en: 'Taxable income to date', fil: 'Taxable income hanggang ngayon' },
     'row.prevTax': { en: 'Less: tax paid in previous quarters', fil: 'Bawas: tax na nabayaran sa naunang quarters' },
     'row.cwtPrev1701': {
       en: 'Less: creditable tax withheld, previous quarters (2307)',
@@ -332,8 +382,8 @@
     // ---------- eBIRForms summary ----------
     'ebir.title': { en: 'What to enter in eBIRForms', fil: 'Ano ang ilalagay sa eBIRForms' },
     'ebir.help': {
-      en: 'Open the matching form in eBIRForms and type these in. Items marked [confirm] still need to be checked against the actual form — look for the line with the same description.',
-      fil: 'Buksan ang tamang form sa eBIRForms at i-type ang mga ito. Ang mga item na may [confirm] ay kailangan pang i-check sa mismong form — hanapin ang linyang may parehong description.'
+      en: 'Open the matching form in eBIRForms and type these in, line by line. Item numbers are from the January 2018 version of each form. Some totals fill in automatically in eBIRForms \u2014 just check they match.',
+      fil: 'Buksan ang tamang form sa eBIRForms at i-type ang mga ito, linya por linya. Galing ang item numbers sa January 2018 version ng bawat form. May mga total na kusang lumalabas sa eBIRForms \u2014 i-check lang kung tugma.'
     },
     'ebir.col.item': { en: 'Item', fil: 'Item' },
     'ebir.col.what': { en: 'What', fil: 'Ano' },
@@ -368,8 +418,6 @@
     'ebir.sched.grad': { en: 'Schedule for graduated rates', fil: 'Schedule para sa graduated rates' },
     'ebir.sched.8': { en: 'Schedule for the 8% rate', fil: 'Schedule para sa 8% rate' },
     'ebir.credits': { en: 'Tax credits/payments', fil: 'Tax credits/payments' },
-    'ebir.totalCredits': { en: 'Total tax credits/payments', fil: 'Total tax credits/payments' },
-    'ebir.taxPayable': { en: 'Tax payable/(overpayment)', fil: 'Tax payable/(overpayment)' },
     'ebir.part1': { en: 'Part I \u00b7 Background information', fil: 'Part I \u00b7 Background information' },
     'ebir.part3': { en: 'Part III \u00b7 Total tax payable (page 1)', fil: 'Part III \u00b7 Total tax payable (page 1)' },
     'atc.business': { en: 'if business income', fil: 'kung kita sa negosyo' },

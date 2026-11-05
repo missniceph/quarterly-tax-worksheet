@@ -102,20 +102,24 @@ Required examples covered by `npm test`:
 
 ---
 
-## Items still marked [confirm]
+## Item numbers
 
-These show up on screen with a yellow **[confirm]** tag until you update `js/rules.js`.
+All item numbers are now filled in (no more **[confirm]**). They follow the **January 2018 (ENCS)** versions of BIR Forms 1701Q and 2551Q:
 
-**BIR Form 1701Q (January 2018 ENCS): page 2 schedule lines (Part V)**
-- Schedule I (graduated): gross sales/receipts, cost of sales/services, allowable expenses, OSD, other non-operating income, taxable income
-- Schedule II (8%): gross sales/receipts, other non-operating income, ₱250,000 reduction, taxable income
-- Schedule III (credits): tax paid in previous quarters, creditable tax withheld in previous quarters (2307), creditable tax withheld this quarter (2307)
+- **1701Q page 1:** checked against a photo of the actual form (Items 1, 2, 8, 16, 16A, 26–30).
+- **1701Q page 2 (Part V):** checked against the BIR's form text and several published copies (Schedule I Items 36–46, Schedule II Items 47–54, Schedule III Items 55–63).
+- **2551Q:** from the original instructions (Items 3, 13, Schedule 1 Items 1 and 7, Items 14, 15, 18, 19, 20–23, 24).
 
-Already confirmed from page 1 of the 1701Q: Item 1 (year), Item 2 (quarter), Item 8 (ATC: II012/II014/II013 graduated, II015/II017/II016 8%), Item 16 (tax rate), Item 16A (method of deduction), Items 26–30 (Part III), plus Schedule I Item 46, Schedule II Item 54, Schedule III Item 62 and Item 63 as referenced on page 1.
+If the BIR releases a new version of a form, update the numbers in `js/rules.js`. The `[confirm]` tag still works there, so any item you're not sure of can go back to `CONFIRM`.
 
-The 2551Q item numbers (Items 3, 13, Schedule 1 Items 1 and 7, Items 14, 15, 18, 19, 20–23 and 24) are already filled in.
+### How the 1701Q is filled in
 
----
+The 1701Q is cumulative, but **not** by typing year-to-date sales. On the form you enter **this quarter's** sales, costs and expenses. Then you add the taxable income from your previous 1701Q of the same year (Item 42, or Item 50 if on 8%). So for Q2 and Q3 the worksheet asks for:
+
+- this quarter's figures, and
+- Item 45 (graduated) or Item 51 (8%) from the last 1701Q you filed this year.
+
+The tax due and the amount to pay come out the same as a year-to-date computation. This way, every line in the "What to enter in eBIRForms" summary also matches the form.
 
 ## Sources
 
