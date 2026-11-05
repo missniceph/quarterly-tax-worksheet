@@ -63,6 +63,7 @@
     expensesYTD: { form: '1701Q', label: 'f.expensesYTD', help: 'f.expensesYTD.help', hint: 'ytd' },
     otherYTD:    { form: '1701Q', label: 'f.otherYTD',    help: 'f.otherYTD.help',    hint: 'ytd' },
     prevTax:     { form: '1701Q', label: 'f.prevTax',     help: 'f.prevTax.help' },
+    cwtPrev1701: { form: '1701Q', label: 'f.cwtPrev1701', help: 'f.cwtPrev1701.help' },
     cwt1701:     { form: '1701Q', label: 'f.cwt1701',     help: 'f.cwt1701.help',     hint: 'quarter' },
     gross2551:   { form: '2551Q', label: 'f.gross2551',   help: 'f.gross2551.help',   hint: 'quarter', required: true },
     cwt2551:     { form: '2551Q', label: 'f.cwt2551',     help: 'f.cwt2551.help',     hint: 'quarter' }
@@ -85,7 +86,7 @@
       list.push('grossYTD');
       if (state.option === 'graduated' && state.deduction !== 'osd') list.push('costYTD', 'expensesYTD');
       list.push('otherYTD');
-      if (state.quarter > 1) list.push('prevTax');
+      if (state.quarter > 1) list.push('prevTax', 'cwtPrev1701');
       list.push('cwt1701');
     }
     if (r.has2551Q) list.push('gross2551', 'cwt2551');
@@ -112,6 +113,7 @@
         expensesYTD: val('expensesYTD'),
         otherIncomeYTD: val('otherYTD'),
         prevQuartersTax: state.quarter > 1 ? val('prevTax') : 0,
+        creditableWithheldPrev: state.quarter > 1 ? val('cwtPrev1701') : 0,
         creditableWithheld: val('cwt1701')
       });
     }
@@ -144,7 +146,10 @@
       rows.push({ label: t('row.taxable'), value: pesoParens(c.taxableIncome), cls: 'strong' });
       rows.push({ label: t('row.taxDueYTDgrad'), value: peso(c.taxDue), cls: 'strong' });
     }
-    if (state.quarter > 1) rows.push({ label: t('row.prevTax'), value: '(' + peso(c.prevQuartersTax) + ')' });
+    if (state.quarter > 1) {
+      rows.push({ label: t('row.prevTax'), value: '(' + peso(c.prevQuartersTax) + ')' });
+      rows.push({ label: t('row.cwtPrev1701'), value: '(' + peso(c.creditableWithheldPrev) + ')' });
+    }
     rows.push({ label: t('row.cwt1701'), value: '(' + peso(c.creditableWithheld) + ')' });
     rows.push(c.overpayment > 0
       ? { label: t('row.overpayment'), value: '(' + peso(c.overpayment) + ')', cls: 'final over' }
@@ -161,6 +166,14 @@
         ? { label: t('row.overpayment'), value: '(' + peso(c.overpayment) + ')', cls: 'final over' }
         : { label: t('row.payable'), value: peso(c.payable), cls: 'final' }
     ];
+  }
+
+  // Extra cautions shown under the 1701Q result.
+  function resultNotes1701(c) {
+    var notes = [];
+    if (c.overThreshold) notes.push('note.over3m');
+    if (c.option === 'graduated' && c.incomeType === 'mixed') notes.push('note.mixedGraduated');
+    return notes;
   }
 
   function optionLabel() { return t('res.option.' + state.option); }
@@ -211,7 +224,10 @@
         rows.push({ item: I1.eightTaxDue, what: t('row.taxDueYTD8'), value: peso(c.taxDue) });
       }
       rows.push({ group: t('ebir.credits') });
-      if (q > 1) rows.push({ item: I1.prevQuartersTax, what: t('row.prevTax'), value: peso(c.prevQuartersTax) });
+      if (q > 1) {
+        rows.push({ item: I1.prevQuartersTax, what: t('row.prevTax'), value: peso(c.prevQuartersTax) });
+        rows.push({ item: I1.prevQuartersCwt, what: t('row.cwtPrev1701'), value: peso(c.creditableWithheldPrev) });
+      }
       rows.push({ item: I1.creditableWithheld, what: t('row.cwt1701'), value: peso(c.creditableWithheld) });
       rows.push({ item: I1.totalCredits, what: t('ebir.totalCredits'), value: peso(c.totalCredits) });
       rows.push({ item: I1.taxPayableSchedule, what: t('ebir.taxPayable'), value: pesoParens(c.net) });
@@ -221,7 +237,7 @@
       rows.push({ item: I1.partIIITaxPayable, what: t('ebir.1701.item28'), value: pesoParens(c.net), strong: true });
       rows.push({ item: I1.partIIIPenalties, what: t('ebir.penalties'), value: t('ebir.1701.penalties.note') });
       rows.push({ item: I1.partIIITotalPayable, what: t('ebir.1701.item30'), value: pesoParens(c.net), strong: true });
-      if (c.creditableWithheld > 0) rows.push({ item: t('ebir.attach'), what: t('ebir.attach.2307'), value: '\u2713', plain: true });
+      if (c.creditableWithheld + c.creditableWithheldPrev > 0) rows.push({ item: t('ebir.attach'), what: t('ebir.attach.2307'), value: '\u2713', plain: true });
       forms.push({ title: t('ebir.1701.title'), rows: rows });
     }
 
@@ -293,7 +309,7 @@
 
   function renderOption() {
     var html = '<h2 class="q" id="q">' + esc(t('q.option')) + '</h2>' +
-      explain('q.option.help') +
+      explain(['q.option.help', 'q.option.help3m']) +
       '<div class="choices">' +
       choice('8', state.notSure ? '' : state.option, 'opt.8', 'opt.8.sub', 'option') +
       choice('graduated', state.notSure ? '' : state.option, 'opt.graduated', 'opt.graduated.sub', 'option') +
@@ -333,6 +349,7 @@
   function renderIncomeType() {
     var helps = ['q.incomeType.help'];
     if (state.option === '8') helps.push('q.incomeType.help8');
+    else helps.push('note.mixedGraduated');
     return '<span class="section-tag">' + esc(t('section.1701Q')) + '</span>' +
       '<h2 class="q" id="q">' + esc(t('q.incomeType')) + '</h2>' +
       explain(helps) +
@@ -404,7 +421,9 @@
       total += all.c1701.payable;
       html += '<div class="result-card" id="res-1701"><h3>' + esc(t('res.1701.title')) + '</h3>' +
         '<p class="hint">' + esc(t('res.1701.help')) + '</p>' + rowsTable(breakdown1701(all.c1701)) +
-        (all.c1701.overpayment > 0 ? '<p class="hint">' + esc(t('overpayment.note')) + '</p>' : '') + '</div>';
+        (all.c1701.overpayment > 0 ? '<p class="hint">' + esc(t('overpayment.note')) + '</p>' : '') +
+        resultNotes1701(all.c1701).map(function (k) { return '<div class="note" data-note="' + k + '"><p>' + esc(t(k)) + '</p></div>'; }).join('') +
+        '</div>';
     }
     if (all.c2551) {
       total += all.c2551.payable;
@@ -462,6 +481,7 @@
         total += all.c1701.payable;
         lines.push(t('res.1701.title'));
         breakdown1701(all.c1701).forEach(function (row) { lines.push('  ' + row.label + ': ' + row.value); });
+        resultNotes1701(all.c1701).forEach(function (k) { lines.push('  ! ' + t(k)); });
         lines.push('');
       }
       if (all.c2551) {

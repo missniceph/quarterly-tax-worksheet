@@ -155,3 +155,18 @@ test('1701Q item numbers confirmed from page 1 of the form', () => {
   assert.deepEqual(RULES.atc1701Q.mixed['8'].map((x) => x.code), ['II016']);
   assert.deepEqual(RULES.atc1701Q.pure.graduated.map((x) => x.code), ['II012', 'II014']);
 });
+
+test('2307 from previous quarters is credited on the cumulative 1701Q', () => {
+  const r = CALC.compute1701Q({
+    option: '8', incomeType: 'pure', grossSalesYTD: 700000,
+    prevQuartersTax: 3000, creditableWithheldPrev: 1000, creditableWithheld: 2000
+  });
+  assert.equal(r.totalCredits, 6000);
+  assert.equal(peso(r.payable), '₱30,000.00');
+});
+
+test('8% over 3,000,000 is flagged (computation unchanged)', () => {
+  const r = CALC.compute1701Q({ option: '8', incomeType: 'pure', grossSalesYTD: 2900000, otherIncomeYTD: 200000 });
+  assert.equal(r.overThreshold, true);
+  assert.equal(CALC.compute1701Q({ option: '8', incomeType: 'pure', grossSalesYTD: 3000000 }).overThreshold, false);
+});

@@ -58,6 +58,7 @@ Open `js/rules.js`. Everything is labeled.
 
 - **8% option**: `eightPercent.rate` (0.08 = 8%) and `reductionPureOnly` (250000).
 - **Graduated table**: `graduatedBrackets`. Each line means "over `over`: tax = `base` + `rate` × (income − `over`)".
+- **8% limit**: `eightPercent.threshold` (3000000). The app only shows a warning above this; it doesn't switch the computation.
 - **OSD**: `osdRate` (0.40 = 40%).
 - **Percentage tax**: `percentageTax.rate` (0.03 = 3%) and its ATC.
 - **Deadlines**: `deadlines`. `month` is 1–12. `nextYear: true` means the following year (used for the Q4 2551Q, January 25).
@@ -101,7 +102,7 @@ These show up on screen with a yellow **[confirm]** tag until you update `js/rul
 **BIR Form 1701Q (January 2018 ENCS): page 2 schedule lines (Part V)**
 - Schedule I (graduated): gross sales/receipts, cost of sales/services, allowable expenses, OSD, other non-operating income, taxable income
 - Schedule II (8%): gross sales/receipts, other non-operating income, ₱250,000 reduction, taxable income
-- Schedule III (credits): tax paid in previous quarters, creditable tax withheld (2307)
+- Schedule III (credits): tax paid in previous quarters, creditable tax withheld in previous quarters (2307), creditable tax withheld this quarter (2307)
 
 Already confirmed from page 1 of the 1701Q: Item 1 (year), Item 2 (quarter), Item 8 (ATC: II012/II014/II013 graduated, II015/II017/II016 8%), Item 16 (tax rate), Item 16A (method of deduction), Items 26–30 (Part III), plus Schedule I Item 46, Schedule II Item 54, Schedule III Item 62 and Item 63 as referenced on page 1.
 

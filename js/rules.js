@@ -24,7 +24,10 @@
       rate: 0.08,
       // Purely self-employed/professionals deduct this first.
       // Mixed-income earners do NOT get this reduction.
-      reductionPureOnly: 250000
+      reductionPureOnly: 250000,
+      // The 8% option only applies while gross sales/receipts + other
+      // non-operating income stay within this (RR 8-2018). The app only warns.
+      threshold: 3000000
     },
 
     // ---------- Graduated income tax rates (2023 onwards) ----------
@@ -89,6 +92,7 @@
       eightTaxDue: 'Schedule II, Item 54',
       // Part V, Schedule III — tax credits/payments
       prevQuartersTax: CONFIRM,
+      prevQuartersCwt: CONFIRM,
       creditableWithheld: CONFIRM,
       totalCredits: 'Schedule III, Item 62',
       taxPayableSchedule: 'Item 63',
