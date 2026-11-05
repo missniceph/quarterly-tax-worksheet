@@ -6,7 +6,11 @@ const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 
 const URL = 'file://' + path.resolve(__dirname, '..', 'index.html');
-const SIZES = { phone: { width: 375, height: 740 }, laptop: { width: 1366, height: 820 } };
+const SIZES = {
+  phone: { width: 360, height: 740 },
+  tablet: { width: 768, height: 1024 },
+  laptop: { width: 1366, height: 820 }
+};
 const shotDir = process.env.SCREENSHOT_DIR;
 
 async function choose(page, name, value) {
@@ -85,7 +89,7 @@ const scenarios = [
     name: 'not-sure-then-graduated-q4', lang: 'en',
     async run(page) {
       await choose(page, 'option', 'notSure');
-      assert.match(await page.textContent('#not-sure-note'), /Item 13 of BIR Form 2551Q/);
+      assert.match(await page.textContent('#not-sure-note'), /Item 13 of BIR Form 2551Q, or Item 16 of BIR Form 1701Q/);
       await next(page);
       assert.match(await page.textContent('#err'), /pick one/i);
       await choose(page, 'optionAfter', 'graduated'); await next(page);
@@ -119,6 +123,74 @@ const scenarios = [
       await choose(page, 'incomeType', 'pure'); await next(page);
       for (const v of ['3,100,000', '', '']) await amount(page, v);
       assert.ok(await page.isVisible('[data-note="note.over3m"]'));
+    }
+  },
+  {
+    name: 'keyboard-only', lang: 'en',
+    async run(page) {
+      // Tab from the top: the first stop is the skip link
+      await page.keyboard.press('Tab');
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'skip-link');
+      await page.focus('[data-choice="option"][data-value="8"]');
+      await page.keyboard.press('Enter');
+      assert.equal(await page.getAttribute('[data-choice="option"][data-value="8"]', 'aria-pressed'), 'true');
+      // focus stays on the chosen button after the re-render
+      assert.equal(await page.evaluate(() => document.activeElement.dataset.value), '8');
+      await page.focus('[data-action="next"]'); await page.keyboard.press('Enter');
+      // new screen: focus moves to its heading
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'q');
+      await page.focus('[data-choice="quarter"][data-value="1"]'); await page.keyboard.press('Space');
+      await page.focus('[data-action="next"]'); await page.keyboard.press('Enter');
+      await page.focus('[data-choice="incomeType"][data-value="pure"]'); await page.keyboard.press('Enter');
+      await page.focus('[data-action="next"]'); await page.keyboard.press('Enter');
+      // number screens: focus lands in the box; Enter moves on
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'amount');
+      await page.keyboard.type('300000'); await page.keyboard.press('Enter');
+      await page.keyboard.press('Enter'); await page.keyboard.press('Enter');
+      assert.match(await page.textContent('#res-1701'), /₱4,000\.00/);
+      // every focusable thing shows a visible outline when focused by keyboard
+      await page.keyboard.press('Tab');
+      const outline = await page.evaluate(() => getComputedStyle(document.activeElement).outlineStyle);
+      assert.notEqual(outline, 'none');
+    }
+  },
+  {
+    name: 'back-language-explainer-weekend-startover', lang: 'en',
+    async run(page) {
+      await choose(page, 'option', 'graduated');
+      await page.click('details.explain summary');
+      await choose(page, 'option', '8');                 // re-render keeps the explainer open
+      assert.equal(await page.evaluate(() => document.querySelector('details.explain').open), true);
+      await next(page);
+      await page.selectOption('#year', '2026'); await choose(page, 'quarter', '3'); await next(page);
+      await choose(page, 'incomeType', 'pure'); await next(page);
+      await page.fill('#amount', '900000');
+      await page.click('[data-lang="fil"]');             // typed value survives language switch
+      assert.equal(await page.inputValue('#amount'), '900,000.00');
+      await next(page);
+      await page.click('[data-action="back"]');          // and going back
+      assert.equal(await page.inputValue('#amount'), '900,000.00');
+      await page.click('[data-lang="en"]');
+      await next(page);
+      for (const v of ['', '', '', '']) await amount(page, v);
+      assert.match(await page.textContent('#res-1701'), /₱52,000\.00/);
+      // Q3 2026 1701Q deadline is Sunday, November 15, 2026
+      const dl = await page.textContent('#deadlines');
+      assert.match(dl, /November 15, 2026/);
+      assert.match(dl, /falls on a Sunday/);
+      // theme toggle flips the page
+      const before = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+      await page.click('#theme-btn');
+      const after = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+      assert.notEqual(before, after);
+      // Start over -> Cancel keeps everything
+      page.removeAllListeners('dialog');
+      page.once('dialog', (d) => d.dismiss());
+      await page.click('#start-over');
+      assert.ok(await page.isVisible('#res-1701'));
+      page.once('dialog', (d) => d.accept());
+      await page.click('#start-over');
+      assert.match(await page.textContent('#q'), /8% income tax option/);
     }
   },
   {

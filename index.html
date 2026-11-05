@@ -3,46 +3,77 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quarterly Tax Worksheet</title>
-  <meta name="description" content="Unofficial bilingual (English/Filipino) practice worksheet for quarterly BIR returns 1701Q and 2551Q. Not a BIR form.">
+  <title>Quarterly Tax Worksheet · Unofficial 1701Q &amp; 2551Q practice (EN/FIL)</title>
+  <meta name="description" content="Free, unofficial practice worksheet in English and Filipino for self-employed Filipinos: compute your 1701Q and 2551Q, then see exactly what to type in eBIRForms. Not a BIR form. Nothing you enter is saved or sent.">
+  <meta name="author" content="Nice to Know (@missniceph)">
   <meta name="color-scheme" content="light dark">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23237a6b'/%3E%3Cpath d='M9 17l5 5 9-11' stroke='white' stroke-width='3.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#f6f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#12181a" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://missniceph.github.io/quarterly-tax-worksheet/">
+
+  <!-- Social share preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nice to Know">
+  <meta property="og:title" content="Quarterly Tax Worksheet (EN/FIL)">
+  <meta property="og:description" content="Unofficial practice worksheet for your 1701Q and 2551Q. See exactly what to type in eBIRForms. English &amp; Filipino. Not a BIR form.">
+  <meta property="og:url" content="https://missniceph.github.io/quarterly-tax-worksheet/">
+  <meta property="og:image" content="https://missniceph.github.io/quarterly-tax-worksheet/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Quarterly Tax Worksheet: unofficial practice worksheet for 1701Q and 2551Q, in English and Filipino, by Nice to Know.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="banner" role="note" id="banner"></div>
+  <a class="skip" href="#screen" id="skip-link">Skip to the worksheet</a>
 
-  <header class="top">
-    <div class="wrap top-inner">
-      <div class="brand">
-        <h1 id="app-title"></h1>
-        <p class="by" id="app-by"></p>
-      </div>
-      <div class="controls">
-        <div class="lang" role="group" id="lang-group">
-          <button type="button" data-lang="en">EN</button>
-          <button type="button" data-lang="fil">FIL</button>
+  <section class="banner" id="banner-region" aria-label="Notice">
+    <p id="banner">Unofficial practice worksheet. Not a BIR form. File your actual return through eBIRForms or your RDO.</p>
+  </section>
+
+  <header>
+    <div class="top">
+      <div class="wrap top-inner">
+        <div class="brand">
+          <h1 id="app-title">Quarterly Tax Worksheet</h1>
+          <p class="by" id="app-by">by Nice to Know (@missniceph)</p>
         </div>
-        <button type="button" class="icon-btn" id="theme-btn"></button>
-        <button type="button" class="ghost-btn" id="start-over"></button>
+        <div class="controls">
+          <div class="lang" role="group" id="lang-group" aria-label="Language">
+            <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+            <button type="button" data-lang="fil" lang="fil" aria-label="Filipino" aria-pressed="false">FIL</button>
+          </div>
+          <button type="button" class="icon-btn" id="theme-btn" aria-label="Switch to dark mode">☾</button>
+          <button type="button" class="ghost-btn" id="start-over">Start over</button>
+        </div>
       </div>
     </div>
   </header>
 
   <main class="wrap" id="main">
-    <p class="tagline" id="tagline"></p>
-    <div id="progress" class="progress" aria-live="polite"></div>
-    <section id="screen" class="screen" tabindex="-1"></section>
-    <p class="privacy" id="privacy"></p>
+    <p class="tagline" id="tagline">Practice your quarterly BIR returns, then see exactly what to type in eBIRForms.</p>
+    <div id="progress" class="progress"></div>
+    <p class="sr-only" id="progress-live" aria-live="polite"></p>
+    <section id="screen" class="screen" aria-labelledby="q" tabindex="-1">
+      <noscript>
+        <p><strong>This worksheet needs JavaScript turned on.</strong> Kailangang naka-on ang JavaScript para gumana ang worksheet na ito.</p>
+      </noscript>
+    </section>
+    <p class="privacy" id="privacy">Nothing you enter is saved or sent anywhere. It all stays on this page and disappears when you close it.</p>
   </main>
 
   <footer class="foot">
-    <div class="wrap" id="footer"></div>
+    <div class="wrap" id="footer">
+      <p><a href="https://instagram.com/missniceph" rel="noopener noreferrer">@missniceph on Instagram</a></p>
+    </div>
   </footer>
 
-  <script src="js/rules.js"></script>
-  <script src="js/calc.js"></script>
-  <script src="js/i18n.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/rules.js" defer></script>
+  <script src="js/calc.js" defer></script>
+  <script src="js/i18n.js" defer></script>
+  <script src="js/app.js" defer></script>
 </body>
 </html>
