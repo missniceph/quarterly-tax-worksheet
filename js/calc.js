@@ -61,59 +61,67 @@
   }
 
   /*
-   * 1701Q (cumulative / year-to-date).
+   * 1701Q, following the form line by line (January 2018 version).
+   * The form is cumulative, but not by entering year-to-date sales: you enter
+   * THIS QUARTER's figures, then add the taxable income from your previous
+   * 1701Q of the same year (Item 42 / Item 50).
+   *
    * input: {
    *   option: '8' | 'graduated',
    *   incomeType: 'pure' | 'mixed',
-   *   deduction: 'itemized' | 'osd'       (graduated only)
-   *   grossSalesYTD, costOfSalesYTD, expensesYTD, otherIncomeYTD,
-   *   prevQuartersTax,                    (tax due/paid in previous quarters this year)
-   *   creditableWithheldPrev,             (BIR Form 2307, previous quarters this year)
-   *   creditableWithheld                  (BIR Form 2307, this quarter)
+   *   deduction: 'itemized' | 'osd'        (graduated only)
+   *   grossSales, costOfSales, expenses,   (this quarter)
+   *   otherIncome,                         (this quarter, non-operating)
+   *   prevTaxableIncome,                   (from your last 1701Q this year: Item 45, or Item 51 if 8%)
+   *   prevQuartersTax,                     (tax paid on previous 1701Qs this year — Item 56)
+   *   creditableWithheldPrev,              (2307, previous quarters — Item 57)
+   *   creditableWithheld                   (2307, this quarter — Item 58)
    * }
    */
   function compute1701Q(input) {
-    var gross = round2(num(input.grossSalesYTD));
-    var other = round2(num(input.otherIncomeYTD));
-    var prev = round2(num(input.prevQuartersTax));
-    var cwt = round2(num(input.creditableWithheld));
-    var cwtPrev = round2(num(input.creditableWithheldPrev));
-    var r = {
-      option: input.option,
-      incomeType: input.incomeType,
-      deduction: input.option === 'graduated' ? input.deduction : null,
-      grossSalesYTD: gross,
-      otherIncomeYTD: other,
-      costOfSalesYTD: 0,
-      expensesYTD: 0,
-      osd: 0,
-      reduction: 0,
-      taxableIncome: 0,
-      taxDue: 0
-    };
+    var gross = round2(num(input.grossSales));
+    var other = round2(num(input.otherIncome));
+    var prevTaxable = round2(num(input.prevTaxableIncome));
+    var r = { option: input.option, incomeType: input.incomeType, deduction: null };
 
     if (input.option === '8') {
-      r.reduction = input.incomeType === 'pure' ? RULES.eightPercent.reductionPureOnly : 0;
-      r.taxableIncome = round2(Math.max(0, gross + other - r.reduction));
-      r.taxDue = round2(r.taxableIncome * RULES.eightPercent.rate);
+      r.item47 = gross;
+      r.item48 = other;
+      r.item49 = round2(gross + other);
+      r.item50 = prevTaxable;
+      r.item51 = round2(r.item49 + r.item50);
+      r.item52 = input.incomeType === 'pure' ? RULES.eightPercent.reductionPureOnly : 0;
+      r.item53 = round2(Math.max(0, r.item51 - r.item52));
+      r.item54 = round2(r.item53 * RULES.eightPercent.rate);
+      r.taxableIncome = r.item53;
+      r.taxDue = r.item54;
+      // Item 51 = gross sales/receipts + other non-operating income to date.
+      r.overThreshold = r.item51 > RULES.eightPercent.threshold;
     } else {
-      if (r.deduction === 'osd') {
-        r.osd = round2(gross * RULES.osdRate);
-        r.taxableIncome = round2(gross - r.osd + other);
-      } else {
-        r.costOfSalesYTD = round2(num(input.costOfSalesYTD));
-        r.expensesYTD = round2(num(input.expensesYTD));
-        r.taxableIncome = round2(gross - r.costOfSalesYTD - r.expensesYTD + other);
-      }
-      r.taxDue = graduatedTax(r.taxableIncome);
+      r.deduction = input.deduction === 'osd' ? 'osd' : 'itemized';
+      var itemized = r.deduction === 'itemized';
+      r.item36 = gross;
+      r.item37 = itemized ? round2(num(input.costOfSales)) : 0;
+      r.item38 = round2(r.item36 - r.item37);
+      r.item39 = itemized ? round2(num(input.expenses)) : 0;
+      r.item40 = itemized ? 0 : round2(gross * RULES.osdRate);
+      r.item41 = round2(r.item38 - (itemized ? r.item39 : r.item40));
+      r.item42 = prevTaxable;
+      r.item43 = other;
+      r.item44 = 0; // share in a general professional partnership: not covered
+      r.item45 = round2(r.item41 + r.item42 + r.item43 + r.item44);
+      r.item46 = graduatedTax(r.item45);
+      r.taxableIncome = r.item45;
+      r.taxDue = r.item46;
+      r.overThreshold = false;
     }
 
-    r.prevQuartersTax = prev;
-    r.creditableWithheldPrev = cwtPrev;
-    r.creditableWithheld = cwt;
-    r.totalCredits = round2(prev + cwtPrev + cwt);
-    r.overThreshold = input.option === '8' && (gross + other) > RULES.eightPercent.threshold;
-    r.net = round2(r.taxDue - r.totalCredits);
+    // Schedule III — tax credits/payments
+    r.item56 = round2(num(input.prevQuartersTax));
+    r.item57 = round2(num(input.creditableWithheldPrev));
+    r.item58 = round2(num(input.creditableWithheld));
+    r.totalCredits = round2(r.item56 + r.item57 + r.item58);   // Item 62
+    r.net = round2(r.taxDue - r.totalCredits);                 // Item 63
     r.payable = Math.max(0, r.net);
     r.overpayment = Math.max(0, -r.net);
     return r;

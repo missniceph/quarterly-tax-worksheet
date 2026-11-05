@@ -63,10 +63,11 @@
 
   // ---------- Fields (step 5) ----------
   var FIELDS = {
-    grossYTD:    { form: '1701Q', label: 'f.grossYTD',    help: 'f.grossYTD.help',    hint: 'ytd',     required: true },
-    costYTD:     { form: '1701Q', label: 'f.costYTD',     help: 'f.costYTD.help',     hint: 'ytd' },
-    expensesYTD: { form: '1701Q', label: 'f.expensesYTD', help: 'f.expensesYTD.help', hint: 'ytd' },
-    otherYTD:    { form: '1701Q', label: 'f.otherYTD',    help: 'f.otherYTD.help',    hint: 'ytd' },
+    gross1701:   { form: '1701Q', label: 'f.gross1701',   help: 'f.gross1701.help',   hint: 'quarter', required: true },
+    cost1701:    { form: '1701Q', label: 'f.cost1701',    help: 'f.cost1701.help',    hint: 'quarter' },
+    expenses1701:{ form: '1701Q', label: 'f.expenses1701',help: 'f.expenses1701.help',hint: 'quarter' },
+    other1701:   { form: '1701Q', label: 'f.other1701',   help: 'f.other1701.help',   hint: 'quarter' },
+    prevTaxable: { form: '1701Q', label: 'f.prevTaxable', help: 'f.prevTaxable.help', byOption: true },
     prevTax:     { form: '1701Q', label: 'f.prevTax',     help: 'f.prevTax.help' },
     cwtPrev1701: { form: '1701Q', label: 'f.cwtPrev1701', help: 'f.cwtPrev1701.help' },
     cwt1701:     { form: '1701Q', label: 'f.cwt1701',     help: 'f.cwt1701.help',     hint: 'quarter' },
@@ -88,10 +89,10 @@
     if (r.has1701Q) {
       list.push('incomeType');
       if (state.option === 'graduated') list.push('deduction');
-      list.push('grossYTD');
-      if (state.option === 'graduated' && state.deduction !== 'osd') list.push('costYTD', 'expensesYTD');
-      list.push('otherYTD');
-      if (state.quarter > 1) list.push('prevTax', 'cwtPrev1701');
+      list.push('gross1701');
+      if (state.option === 'graduated' && state.deduction !== 'osd') list.push('cost1701', 'expenses1701');
+      list.push('other1701');
+      if (state.quarter > 1) list.push('prevTaxable', 'prevTax', 'cwtPrev1701');
       list.push('cwt1701');
     }
     if (r.has2551Q) list.push('gross2551', 'cwt2551');
@@ -113,10 +114,11 @@
         option: state.option,
         incomeType: state.incomeType,
         deduction: state.deduction,
-        grossSalesYTD: val('grossYTD'),
-        costOfSalesYTD: val('costYTD'),
-        expensesYTD: val('expensesYTD'),
-        otherIncomeYTD: val('otherYTD'),
+        grossSales: val('gross1701'),
+        costOfSales: val('cost1701'),
+        expenses: val('expenses1701'),
+        otherIncome: val('other1701'),
+        prevTaxableIncome: state.quarter > 1 ? val('prevTaxable') : 0,
         prevQuartersTax: state.quarter > 1 ? val('prevTax') : 0,
         creditableWithheldPrev: state.quarter > 1 ? val('cwtPrev1701') : 0,
         creditableWithheld: val('cwt1701')
@@ -133,31 +135,39 @@
 
   // Rows for the "Your results" breakdown. Each: {label, value, cls}
   function breakdown1701(c) {
-    var rows = [{ label: t('row.grossYTD'), value: peso(c.grossSalesYTD) }];
+    var q = state.quarter;
+    var rows = [];
+    function less(n) { return '(' + peso(n) + ')'; }
     if (c.option === '8') {
-      if (c.otherIncomeYTD) rows.push({ label: t('row.otherYTD'), value: peso(c.otherIncomeYTD) });
-      if (c.incomeType === 'pure') rows.push({ label: t('row.reduction'), value: '(' + peso(c.reduction) + ')' });
+      rows.push({ label: t('row.sales'), value: peso(c.item47) });
+      if (c.item48) rows.push({ label: t('row.other'), value: peso(c.item48) });
+      if (q > 1) rows.push({ label: t('row.prevTaxable'), value: peso(c.item50) });
+      rows.push({ label: t('row.cumulative'), value: peso(c.item51) });
+      if (c.incomeType === 'pure') rows.push({ label: t('row.reduction'), value: less(c.item52) });
       else rows.push({ label: t('row.noReduction'), value: peso(0), cls: 'muted' });
-      rows.push({ label: t('row.taxable'), value: pesoParens(c.taxableIncome), cls: 'strong' });
-      rows.push({ label: t('row.taxDueYTD8'), value: peso(c.taxDue), cls: 'strong' });
+      rows.push({ label: t('row.taxable'), value: peso(c.taxableIncome), cls: 'strong' });
+      rows.push({ label: t('row.taxDue8'), value: peso(c.taxDue), cls: 'strong' });
     } else {
+      rows.push({ label: t('row.sales'), value: peso(c.item36) });
       if (c.deduction === 'osd') {
-        rows.push({ label: t('row.osd'), value: '(' + peso(c.osd) + ')' });
+        rows.push({ label: t('row.osd'), value: less(c.item40) });
       } else {
-        rows.push({ label: t('row.costYTD'), value: '(' + peso(c.costOfSalesYTD) + ')' });
-        rows.push({ label: t('row.expensesYTD'), value: '(' + peso(c.expensesYTD) + ')' });
+        rows.push({ label: t('row.cost'), value: less(c.item37) });
+        rows.push({ label: t('row.expenses'), value: less(c.item39) });
       }
-      if (c.otherIncomeYTD) rows.push({ label: t('row.otherYTD'), value: peso(c.otherIncomeYTD) });
+      rows.push({ label: t('row.netIncome'), value: pesoParens(c.item41) });
+      if (q > 1) rows.push({ label: t('row.prevTaxable'), value: pesoParens(c.item42) });
+      if (c.item43) rows.push({ label: t('row.other'), value: peso(c.item43) });
       rows.push({ label: t('row.taxable'), value: pesoParens(c.taxableIncome), cls: 'strong' });
-      rows.push({ label: t('row.taxDueYTDgrad'), value: peso(c.taxDue), cls: 'strong' });
+      rows.push({ label: t('row.taxDueGrad'), value: peso(c.taxDue), cls: 'strong' });
     }
-    if (state.quarter > 1) {
-      rows.push({ label: t('row.prevTax'), value: '(' + peso(c.prevQuartersTax) + ')' });
-      rows.push({ label: t('row.cwtPrev1701'), value: '(' + peso(c.creditableWithheldPrev) + ')' });
+    if (q > 1) {
+      rows.push({ label: t('row.prevTax'), value: less(c.item56) });
+      rows.push({ label: t('row.cwtPrev1701'), value: less(c.item57) });
     }
-    rows.push({ label: t('row.cwt1701'), value: '(' + peso(c.creditableWithheld) + ')' });
+    rows.push({ label: t('row.cwt1701'), value: less(c.item58) });
     rows.push(c.overpayment > 0
-      ? { label: t('row.overpayment'), value: '(' + peso(c.overpayment) + ')', cls: 'final over' }
+      ? { label: t('row.overpayment'), value: less(c.overpayment), cls: 'final over' }
       : { label: t('row.payable'), value: peso(c.payable), cls: 'final' });
     return rows;
   }
@@ -204,45 +214,55 @@
         { item: I1.taxRateOption, what: t('ebir.taxRate'),
           value: q === 1 ? t('ebir.taxRate.q1.' + state.option) : t('ebir.taxRate.later', { option: optionLabel() }) }
       ];
+      var blank = t('ebir.leaveBlank');
       if (c.option === 'graduated') {
         rows.push({ item: I1.deductionMethod, what: t('ebir.deduction'),
           value: c.deduction === 'osd' ? t('opt.osd') : t('opt.itemized') });
         rows.push({ group: t('ebir.sched.grad') });
-        rows.push({ item: I1.gradGrossSales, what: t('row.grossYTD'), value: peso(c.grossSalesYTD) });
+        rows.push({ item: I1.s1Sales, what: t('ebir.s1.36'), value: peso(c.item36) });
         if (c.deduction === 'osd') {
-          rows.push({ item: I1.gradOsd, what: t('row.osd'), value: peso(c.osd) });
+          rows.push({ item: I1.s1CostOfSales, what: t('ebir.s1.37'), value: blank });
+          rows.push({ item: I1.s1GrossIncome, what: t('ebir.s1.38'), value: peso(c.item38) });
+          rows.push({ item: I1.s1Itemized, what: t('ebir.s1.39'), value: blank });
+          rows.push({ item: I1.s1Osd, what: t('ebir.s1.40'), value: peso(c.item40) });
         } else {
-          rows.push({ item: I1.gradCostOfSales, what: t('row.costYTD'), value: peso(c.costOfSalesYTD) });
-          rows.push({ item: I1.gradExpenses, what: t('row.expensesYTD'), value: peso(c.expensesYTD) });
+          rows.push({ item: I1.s1CostOfSales, what: t('ebir.s1.37'), value: peso(c.item37) });
+          rows.push({ item: I1.s1GrossIncome, what: t('ebir.s1.38'), value: pesoParens(c.item38) });
+          rows.push({ item: I1.s1Itemized, what: t('ebir.s1.39'), value: peso(c.item39) });
+          rows.push({ item: I1.s1Osd, what: t('ebir.s1.40'), value: blank });
         }
-        rows.push({ item: I1.gradOtherIncome, what: t('row.otherYTD'), value: peso(c.otherIncomeYTD) });
-        rows.push({ item: I1.gradTaxableIncome, what: t('row.taxable'), value: pesoParens(c.taxableIncome) });
-        rows.push({ item: I1.gradTaxDue, what: t('row.taxDueYTDgrad'), value: peso(c.taxDue) });
+        rows.push({ item: I1.s1NetIncome, what: t('ebir.s1.41'), value: pesoParens(c.item41) });
+        rows.push({ item: I1.s1PrevTaxable, what: t('ebir.s1.42'), value: pesoParens(c.item42) });
+        rows.push({ item: I1.s1OtherIncome, what: t('ebir.s1.43'), value: peso(c.item43) });
+        rows.push({ item: I1.s1Gpp, what: t('ebir.s1.44'), value: t('ebir.gpp') });
+        rows.push({ item: I1.s1TotalTaxable, what: t('ebir.s1.45'), value: pesoParens(c.item45) });
+        rows.push({ item: I1.s1TaxDue, what: t('ebir.s1.46'), value: peso(c.item46), strong: true });
       } else {
         rows.push({ group: t('ebir.sched.8') });
-        rows.push({ item: I1.eightGrossSales, what: t('row.grossYTD'), value: peso(c.grossSalesYTD) });
-        rows.push({ item: I1.eightOtherIncome, what: t('row.otherYTD'), value: peso(c.otherIncomeYTD) });
-        rows.push({ item: I1.eightReduction,
-          what: c.incomeType === 'pure' ? t('row.reduction') : t('row.noReduction'),
-          value: peso(c.reduction) });
-        rows.push({ item: I1.eightTaxableIncome, what: t('row.taxable'), value: peso(c.taxableIncome) });
-        rows.push({ item: I1.eightTaxDue, what: t('row.taxDueYTD8'), value: peso(c.taxDue) });
+        rows.push({ item: I1.s2Sales, what: t('ebir.s2.47'), value: peso(c.item47) });
+        rows.push({ item: I1.s2OtherIncome, what: t('ebir.s2.48'), value: peso(c.item48) });
+        rows.push({ item: I1.s2TotalQuarter, what: t('ebir.s2.49'), value: peso(c.item49) });
+        rows.push({ item: I1.s2PrevTaxable, what: t('ebir.s2.50'), value: peso(c.item50) });
+        rows.push({ item: I1.s2Cumulative, what: t('ebir.s2.51'), value: peso(c.item51) });
+        rows.push({ item: I1.s2Reduction, what: c.incomeType === 'pure' ? t('ebir.s2.52') : t('ebir.s2.52mixed'), value: peso(c.item52) });
+        rows.push({ item: I1.s2Taxable, what: t('ebir.s2.53'), value: peso(c.item53) });
+        rows.push({ item: I1.s2TaxDue, what: t('ebir.s2.54'), value: peso(c.item54), strong: true });
       }
       rows.push({ group: t('ebir.credits') });
-      if (q > 1) {
-        rows.push({ item: I1.prevQuartersTax, what: t('row.prevTax'), value: peso(c.prevQuartersTax) });
-        rows.push({ item: I1.prevQuartersCwt, what: t('row.cwtPrev1701'), value: peso(c.creditableWithheldPrev) });
-      }
-      rows.push({ item: I1.creditableWithheld, what: t('row.cwt1701'), value: peso(c.creditableWithheld) });
-      rows.push({ item: I1.totalCredits, what: t('ebir.totalCredits'), value: peso(c.totalCredits) });
-      rows.push({ item: I1.taxPayableSchedule, what: t('ebir.taxPayable'), value: pesoParens(c.net) });
+      rows.push({ item: I1.s3PriorYearExcess, what: t('ebir.s3.55'), value: t('ebir.notCovered') });
+      rows.push({ item: I1.s3PrevPayments, what: t('ebir.s3.56'), value: peso(c.item56) });
+      rows.push({ item: I1.s3PrevCwt, what: t('ebir.s3.57'), value: peso(c.item57) });
+      rows.push({ item: I1.s3Cwt, what: t('ebir.s3.58'), value: peso(c.item58) });
+      rows.push({ item: I1.s3OtherCredits, what: t('ebir.s3.59'), value: t('ebir.notCovered') });
+      rows.push({ item: I1.s3TotalCredits, what: t('ebir.s3.62'), value: peso(c.totalCredits) });
+      rows.push({ item: I1.s3TaxPayable, what: t('ebir.s3.63'), value: pesoParens(c.net) });
       rows.push({ group: t('ebir.part3') });
       rows.push({ item: I1.partIIITaxDue, what: t('ebir.1701.item26'), value: peso(c.taxDue) });
       rows.push({ item: I1.partIIICredits, what: t('ebir.1701.item27'), value: peso(c.totalCredits) });
       rows.push({ item: I1.partIIITaxPayable, what: t('ebir.1701.item28'), value: pesoParens(c.net), strong: true });
       rows.push({ item: I1.partIIIPenalties, what: t('ebir.penalties'), value: t('ebir.1701.penalties.note') });
       rows.push({ item: I1.partIIITotalPayable, what: t('ebir.1701.item30'), value: pesoParens(c.net), strong: true });
-      if (c.creditableWithheld + c.creditableWithheldPrev > 0) rows.push({ item: t('ebir.attach'), what: t('ebir.attach.2307'), value: '\u2713', plain: true });
+      if (c.item57 + c.item58 > 0) rows.push({ item: t('ebir.attach'), what: t('ebir.attach.2307'), value: '\u2713', plain: true });
       forms.push({ title: t('ebir.1701.title'), rows: rows });
     }
 
@@ -290,10 +310,10 @@
   // ---------- Rendering ----------
   var screen = document.getElementById('screen');
 
-  function explain(textKeyOrKeys) {
+  function explain(textKeyOrKeys, vars) {
     var keys = [].concat(textKeyOrKeys);
     return '<details class="explain"><summary>' + esc(t('whatIsThis')) + '</summary>' +
-      keys.map(function (k) { return '<p>' + esc(t(k)) + '</p>'; }).join('') + '</details>';
+      keys.map(function (k) { return '<p>' + esc(t(k, vars)) + '</p>'; }).join('') + '</details>';
   }
 
   function heading(text) {
@@ -384,12 +404,11 @@
     var f = FIELDS[id];
     var q = state.quarter;
     var hint = '';
-    if (f.hint === 'ytd') hint = t('ytdHint', { end: monthName(q * 3) + ' ' + new Date(state.year, q * 3, 0).getDate(), year: state.year });
     if (f.hint === 'quarter') hint = t('quarterHint', { start: monthName(q * 3 - 2) + ' 1', end: monthName(q * 3) + ' ' + new Date(state.year, q * 3, 0).getDate(), year: state.year });
     var raw = state.raw[id] !== undefined ? state.raw[id] : '';
     var isLast = steps()[steps().indexOf(id) + 1] === 'results';
     return '<span class="section-tag">' + esc(t('section.' + f.form)) + '</span>' +
-      '<h2 class="q" id="q" tabindex="-1"><label class="field-label" for="amount">' + esc(t(f.label, { year: state.year })) + '</label></h2>' +
+      '<h2 class="q" id="q" tabindex="-1"><label class="field-label" for="amount">' + esc(t(f.byOption ? f.label + '.' + state.option : f.label, { year: state.year, prevQ: 'Q' + (q - 1) })) + '</label></h2>' +
       (hint ? '<p class="hint" id="hint1">' + esc(hint) + '</p>' : '') +
       (!f.required ? '<p class="hint" id="hint2">' + esc(t('optionalHint')) + '</p>' : '') +
       '<div class="money"><span aria-hidden="true">₱</span>' +
@@ -398,7 +417,7 @@
       (f.required ? ' aria-required="true"' : '') + ' placeholder="0.00" value="' + esc(raw) + '"' +
       (state.error ? ' aria-invalid="true"' : '') + '></div>' +
       errorHtml() +
-      explain(f.help) +
+      explain(f.byOption ? f.help + '.' + state.option : f.help, { year: state.year, prevQ: 'Q' + (q - 1) }) +
       nav({ nextKey: isLast ? 'btn.seeResults' : 'btn.next' });
   }
 

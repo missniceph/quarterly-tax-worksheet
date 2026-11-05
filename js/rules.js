@@ -68,8 +68,9 @@
     },
 
     // ---------- Item numbers ----------
-    // Confirmed from page 1 of the form (Part I and Part III). Schedule lines
-    // on page 2 (Part V) are still [confirm].
+    // BIR Form 1701Q, January 2018 (ENCS). Page 1 items were checked against a
+    // photo of the form; page 2 (Part V) items against the BIR form text and
+    // several published copies.
     items1701Q: {
       year: 'Item 1',
       quarter: 'Item 2',
@@ -77,25 +78,34 @@
       taxRateOption: 'Item 16',
       deductionMethod: 'Item 16A',
       // Part V, Schedule I — graduated rates
-      gradGrossSales: CONFIRM,
-      gradCostOfSales: CONFIRM,
-      gradExpenses: CONFIRM,
-      gradOsd: CONFIRM,
-      gradOtherIncome: CONFIRM,
-      gradTaxableIncome: CONFIRM,
-      gradTaxDue: 'Schedule I, Item 46',
+      s1Sales: 'Item 36',
+      s1CostOfSales: 'Item 37',
+      s1GrossIncome: 'Item 38',
+      s1Itemized: 'Item 39',
+      s1Osd: 'Item 40',
+      s1NetIncome: 'Item 41',
+      s1PrevTaxable: 'Item 42',
+      s1OtherIncome: 'Item 43',
+      s1Gpp: 'Item 44',
+      s1TotalTaxable: 'Item 45',
+      s1TaxDue: 'Item 46',
       // Part V, Schedule II — 8% rate
-      eightGrossSales: CONFIRM,
-      eightOtherIncome: CONFIRM,
-      eightReduction: CONFIRM,
-      eightTaxableIncome: CONFIRM,
-      eightTaxDue: 'Schedule II, Item 54',
+      s2Sales: 'Item 47',
+      s2OtherIncome: 'Item 48',
+      s2TotalQuarter: 'Item 49',
+      s2PrevTaxable: 'Item 50',
+      s2Cumulative: 'Item 51',
+      s2Reduction: 'Item 52',
+      s2Taxable: 'Item 53',
+      s2TaxDue: 'Item 54',
       // Part V, Schedule III — tax credits/payments
-      prevQuartersTax: CONFIRM,
-      prevQuartersCwt: CONFIRM,
-      creditableWithheld: CONFIRM,
-      totalCredits: 'Schedule III, Item 62',
-      taxPayableSchedule: 'Item 63',
+      s3PriorYearExcess: 'Item 55',
+      s3PrevPayments: 'Item 56',
+      s3PrevCwt: 'Item 57',
+      s3Cwt: 'Item 58',
+      s3OtherCredits: 'Items 59\u201361',
+      s3TotalCredits: 'Item 62',
+      s3TaxPayable: 'Item 63',
       // Part III — Total tax payable (page 1)
       partIIITaxDue: 'Item 26',
       partIIICredits: 'Item 27',
