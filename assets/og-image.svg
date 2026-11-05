@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f6f4ef"/>
+  <rect x="0" y="0" width="1200" height="64" fill="#fff4d6"/>
+  <text x="600" y="42" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#5c4300">Unofficial practice worksheet · Not a BIR form</text>
+  <rect x="80" y="124" width="1040" height="426" rx="32" fill="#ffffff" stroke="#d9dfdc" stroke-width="2"/>
+  <rect x="136" y="176" width="112" height="112" rx="28" fill="#237a6b"/>
+  <path d="M168 234l24 24 42-52" stroke="#fff" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="284" y="226" font-family="Helvetica, Arial, sans-serif" font-size="66" font-weight="800" fill="#1f2a2e">Quarterly Tax</text>
+  <text x="284" y="296" font-family="Helvetica, Arial, sans-serif" font-size="66" font-weight="800" fill="#1f2a2e">Worksheet</text>
+  <text x="136" y="378" font-family="Helvetica, Arial, sans-serif" font-size="34" fill="#3d4a4f">Practice your 1701Q and 2551Q, then see exactly</text>
+  <text x="136" y="424" font-family="Helvetica, Arial, sans-serif" font-size="34" fill="#3d4a4f">what to type in eBIRForms. English &amp; Filipino.</text>
+  <rect x="136" y="462" width="196" height="52" rx="26" fill="#dcefe9"/>
+  <text x="234" y="497" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#1f2a2e">8% option</text>
+  <rect x="348" y="462" width="196" height="52" rx="26" fill="#dcefe9"/>
+  <text x="446" y="497" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#1f2a2e">Graduated</text>
+  <rect x="560" y="462" width="196" height="52" rx="26" fill="#dcefe9"/>
+  <text x="658" y="497" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#1f2a2e">EN · FIL</text>
+  <text x="600" y="598" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="28" font-weight="600" fill="#1d5f53">Nice to Know · @missniceph</text>
+</svg>

@@ -29,12 +29,28 @@
     },
     'privacy': {
       en: 'Nothing you enter is saved or sent anywhere. It all stays on this page and disappears when you close it.',
-      fil: 'Walang sine-save o ipinapadala kahit saan sa mga ilalagay mo. Dito lang lahat sa page na ito, at mawawala pag sinara mo.'
+      fil: 'Walang naiipon o naipapadala kahit saan sa mga tina-type mo. Dito lang ito sa page, at mawawala pag sinara mo.'
+    },
+    'banner.label': { en: 'Notice', fil: 'Paalala' },
+    'skip': { en: 'Skip to the worksheet', fil: 'Diretso sa worksheet' },
+    'app.titleSuffix': {
+      en: 'Unofficial 1701Q & 2551Q practice',
+      fil: 'Unofficial na practice para sa 1701Q at 2551Q'
+    },
+    'day.sat': { en: 'Saturday', fil: 'Sabado' },
+    'day.sun': { en: 'Sunday', fil: 'Linggo' },
+    'dl.weekend': {
+      en: 'This falls on a {day}. When a deadline lands on a weekend or holiday, check the BIR website or your RDO for the actual due date.',
+      fil: 'Tumatapat ito sa {day}. Kapag weekend o holiday ang deadline, i-check sa BIR website o sa RDO mo kung kailan talaga ang due date.'
+    },
+    'footer.rr82018': {
+      en: 'Revenue Regulations (RR) No. 8-2018 (for the \u20b13,000,000 limit and the mixed-income note)',
+      fil: 'Revenue Regulations (RR) No. 8-2018 (para sa \u20b13,000,000 na limit at sa paalala sa mixed income)'
     },
     'lang.label': { en: 'Language', fil: 'Wika' },
     'theme.toDark': { en: 'Switch to dark mode', fil: 'Lumipat sa dark mode' },
     'theme.toLight': { en: 'Switch to light mode', fil: 'Lumipat sa light mode' },
-    'btn.startOver': { en: 'Start over', fil: 'Ulitin' },
+    'btn.startOver': { en: 'Start over', fil: 'Simulan ulit' },
     'btn.next': { en: 'Next', fil: 'Susunod' },
     'btn.back': { en: 'Back', fil: 'Bumalik' },
     'btn.seeResults': { en: 'See my results', fil: 'Tingnan ang resulta' },
@@ -42,15 +58,14 @@
     'btn.copied': { en: 'Copied! Paste it in your notes.', fil: 'Nakopya na! I-paste mo sa notes mo.' },
     'btn.copyFailed': {
       en: 'Couldn’t copy automatically. Select the text below and copy it.',
-      fil: 'Hindi ma-copy nang kusa. I-select ang text sa ibaba at i-copy.'
+      fil: 'Hindi ma-copy nang automatic. I-select ang text sa ibaba at i-copy mo.'
     },
     'confirm.startOver': {
       en: 'Clear everything and start over?',
-      fil: 'Buburahin lahat at uulit tayo mula simula. Okay lang?'
+      fil: 'Buburahin natin lahat ng nilagay mo at magsisimula ulit. Tuloy?'
     },
     'whatIsThis': { en: 'What is this?', fil: 'Ano ito?' },
-    'progress': { en: 'Step {n} of {total}', fil: 'Hakbang {n} sa {total}' },
-    'confirmTag': { en: '[confirm]', fil: '[confirm]' },
+    'progress': { en: 'Step {n} of {total}', fil: 'Step {n} sa {total}' },
 
     // ---------- Step 1: 8% or graduated ----------
     'q.option': {
@@ -84,17 +99,17 @@
       fil: 'Gagawin mo ang 1701Q at 2551Q worksheets.'
     },
     'opt.notSure': { en: 'Not sure', fil: 'Hindi ako sigurado' },
-    'opt.notSure.sub': { en: 'Let’s find out.', fil: 'Alamin natin.' },
+    'opt.notSure.sub': { en: 'Let’s find out.', fil: 'Sige, alamin natin.' },
     'notSure.title': { en: 'How to find out', fil: 'Paano malalaman' },
     'notSure.body': {
-      en: 'You make this choice on your first-quarter return of the year — Item 13 of BIR Form 2551Q, or the corresponding item in BIR Form 1701Q — and it can’t be changed for the rest of the year. Check your first-quarter return for this year, or ask your RDO (Revenue District Office, the BIR office where you’re registered).',
-      fil: 'Ginagawa ang pagpiling ito sa first-quarter return mo ng taon — sa Item 13 ng BIR Form 2551Q, o sa katumbas na item sa BIR Form 1701Q — at hindi na ito puwedeng palitan sa natitirang bahagi ng taon. Silipin ang first-quarter return mo ngayong taon, o magtanong sa RDO mo (Revenue District Office, ang BIR office kung saan ka naka-register).'
+      en: 'You make this choice on your first-quarter return of the year — Item 13 of BIR Form 2551Q, or Item 16 of BIR Form 1701Q — and it can’t be changed for the rest of the year. Check your first-quarter return for this year, or ask your RDO (Revenue District Office, the BIR office where you’re registered).',
+      fil: 'Pinipili mo ito sa first-quarter return mo ng taon \u2014 sa Item 13 ng BIR Form 2551Q, o sa Item 16 ng BIR Form 1701Q \u2014 at hindi na ito puwedeng palitan hanggang matapos ang taon. Silipin ang first-quarter return mo ngayong taon, o magtanong sa RDO mo (Revenue District Office, ang BIR office kung saan ka naka-register).'
     },
     'notSure.pick': {
       en: 'Once you know, pick one:',
-      fil: 'Kapag alam mo na, pumili ka rito:'
+      fil: 'Kapag alam mo na, piliin dito:'
     },
-    'err.pickOne': { en: 'Please pick one to continue.', fil: 'Pumili muna ng isa para tumuloy.' },
+    'err.pickOne': { en: 'Please pick one to continue.', fil: 'Pumili muna ng isa bago tumuloy.' },
 
     // ---------- Step 2: quarter and year ----------
     'q.period': {
@@ -151,7 +166,7 @@
     },
     'q.deduction.help': {
       en: 'This is how you subtract expenses before computing graduated income tax. Itemized: you subtract your actual cost of sales/services and allowable expenses. OSD: instead of listing expenses, you simply deduct 40% of your gross sales/receipts.',
-      fil: 'Ito ang paraan ng pagbawas ng gastos bago i-compute ang graduated income tax. Sa Itemized, ibabawas mo ang aktuwal na cost of sales/services at allowable expenses mo. Sa OSD, hindi mo na kailangang ilista ang gastos — 40% ng gross sales/receipts mo ang ibabawas nang diretso.'
+      fil: 'Ito ang paraan ng pagbawas ng gastos bago i-compute ang graduated income tax. Sa Itemized, ibabawas mo ang totoong cost of sales/services at allowable expenses mo. Sa OSD, hindi mo na kailangang ilista ang mga gastos \u2014 diretsong ibabawas ang 40% ng gross sales/receipts mo.'
     },
     'opt.itemized': { en: 'Itemized deductions', fil: 'Itemized deductions' },
     'opt.itemized.sub': {
@@ -238,7 +253,7 @@
     },
     'f.cwtPrev1701.help': {
       en: 'Because the 1701Q is cumulative, 2307s from earlier quarters of this year still count as credits. Add up the income tax withheld on the 2307s you already claimed in your earlier 1701Q returns this year. This quarter\u2019s 2307s come next, on a separate line.',
-      fil: 'Dahil cumulative ang 1701Q, kasama pa rin bilang credit ang mga 2307 mula sa naunang quarters ngayong taon. Pagsamahin ang income tax withheld sa mga 2307 na na-claim mo na sa naunang 1701Q mo ngayong taon. Ang 2307 para sa quarter na ito ay sa susunod na tanong, hiwalay na linya.'
+      fil: 'Dahil cumulative ang 1701Q, credit pa rin ang mga 2307 mula sa naunang quarters ngayong taon. Pagsamahin ang income tax withheld sa mga 2307 na na-claim mo na sa mga naunang 1701Q mo ngayong taon. Sa susunod na tanong mo ilalagay ang 2307 para sa quarter na ito.'
     },
     'f.cwt1701': {
       en: 'Creditable tax withheld this quarter (per BIR Form 2307)',
@@ -267,10 +282,6 @@
 
     // ---------- Results ----------
     'res.title': { en: 'Your results', fil: 'Ang resulta mo' },
-    'res.intro': {
-      en: '{quarter} {year} · {option} · {incomeType}',
-      fil: '{quarter} {year} · {option} · {incomeType}'
-    },
     'res.option.8': { en: '8% option', fil: '8% option' },
     'res.option.graduated': { en: 'Graduated rates', fil: 'Graduated rates' },
     'res.nothing.title': { en: 'Nothing to file this quarter', fil: 'Walang ifa-file ngayong quarter' },
@@ -315,7 +326,7 @@
     'total.label': { en: 'Total to pay this quarter', fil: 'Kabuuang babayaran ngayong quarter' },
     'total.help': {
       en: 'If you file on time. Pay each return separately.',
-      fil: 'Kung on time ang pag-file. Hiwalay na babayaran ang bawat return.'
+      fil: 'Kung on time ka mag-file. Hiwalay ang bayad sa bawat return.'
     },
 
     // ---------- eBIRForms summary ----------
@@ -351,7 +362,7 @@
     },
     'ebir.taxRate.2551.later': {
       en: 'Leave as is — filled only on the initial quarter of the year',
-      fil: 'Hayaan lang — sa initial quarter lang ng taon ito pinupunan'
+      fil: 'Huwag nang galawin \u2014 sa unang quarter lang ng taon ito sinasagutan'
     },
     'ebir.deduction': { en: 'Method of deduction', fil: 'Method of deduction' },
     'ebir.sched.grad': { en: 'Schedule for graduated rates', fil: 'Schedule para sa graduated rates' },
@@ -421,7 +432,6 @@
       en: 'Same as Item 19 if filing on time',
       fil: 'Pareho sa Item 19 kung on time ang pag-file'
     },
-    'ebir.inParens': { en: 'in parentheses = overpayment', fil: 'naka-parentheses = overpayment' },
 
     // ---------- Deadlines ----------
     'dl.title': { en: 'Deadlines for this quarter', fil: 'Deadlines para sa quarter na ito' },
@@ -441,14 +451,13 @@
       en: 'QUARTERLY TAX WORKSHEET — MY SUMMARY',
       fil: 'QUARTERLY TAX WORKSHEET — SUMMARY KO'
     },
-    'copy.inputs': { en: 'What I entered', fil: 'Mga inilagay ko' },
 
     // ---------- Footer ----------
     'footer.disclaimer': {
       en: 'General information only, not tax advice. This is an unofficial practice worksheet and is not affiliated with the BIR. Always double-check with eBIRForms or your RDO.',
       fil: 'Pangkalahatang impormasyon lamang, hindi tax advice. Hindi opisyal ang practice worksheet na ito at walang kaugnayan sa BIR. Laging i-double check sa eBIRForms o sa RDO mo.'
     },
-    'footer.sources': { en: 'Sources', fil: 'Mga pinagkunan' },
+    'footer.sources': { en: 'Sources', fil: 'Mga source' },
     'footer.made': { en: 'Made by Nice to Know', fil: 'Gawa ng Nice to Know' },
     'footer.follow': { en: 'Follow @missniceph on Instagram', fil: 'I-follow si @missniceph sa Instagram' },
 

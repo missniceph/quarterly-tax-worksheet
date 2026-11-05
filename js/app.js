@@ -48,6 +48,11 @@
   function pesoParens(n) { return n < 0 ? '(' + peso(-n) + ')' : peso(n); }
   function monthName(m) { return t('m' + m); }
   function formatDate(d) { return monthName(d.month) + ' ' + d.day + ', ' + d.year; }
+  // 0 = Sunday, 6 = Saturday. Returns the day-name key if the date is on a weekend.
+  function weekendKey(d) {
+    var wd = new Date(d.year, d.month - 1, d.day).getDay();
+    return wd === 0 ? 'day.sun' : wd === 6 ? 'day.sat' : null;
+  }
   function qLabel(q) { return 'Q' + q; }
   function itemLabel(item) { return item === RULES.CONFIRM ? 'Item ' + RULES.CONFIRM : item; }
   function itemHtml(item) {
@@ -271,10 +276,12 @@
     var out = [];
     var q = state.quarter, y = state.year, r = returns();
     if (r.has1701Q) {
-      out.push({ label: t('dl.1701', { quarter: qLabel(q), year: y }), date: formatDate(CALC.deadlineFor('form1701Q', q, y)) });
+      var d1 = CALC.deadlineFor('form1701Q', q, y);
+      out.push({ label: t('dl.1701', { quarter: qLabel(q), year: y }), date: formatDate(d1), weekend: weekendKey(d1) });
     }
     if (r.has2551Q) {
-      out.push({ label: t('dl.2551', { quarter: qLabel(q), year: y }), date: formatDate(CALC.deadlineFor('form2551Q', q, y)) });
+      var d2 = CALC.deadlineFor('form2551Q', q, y);
+      out.push({ label: t('dl.2551', { quarter: qLabel(q), year: y }), date: formatDate(d2), weekend: weekendKey(d2) });
     }
     if (q === 4) out.push({ label: t('dl.no1701Q4'), date: '' });
     return out;
@@ -287,6 +294,10 @@
     var keys = [].concat(textKeyOrKeys);
     return '<details class="explain"><summary>' + esc(t('whatIsThis')) + '</summary>' +
       keys.map(function (k) { return '<p>' + esc(t(k)) + '</p>'; }).join('') + '</details>';
+  }
+
+  function heading(text) {
+    return '<h2 class="q" id="q" tabindex="-1">' + esc(text) + '</h2>';
   }
 
   function choice(value, current, titleKey, subKey, name) {
@@ -308,9 +319,9 @@
   }
 
   function renderOption() {
-    var html = '<h2 class="q" id="q">' + esc(t('q.option')) + '</h2>' +
+    var html = heading(t('q.option')) +
       explain(['q.option.help', 'q.option.help3m']) +
-      '<div class="choices">' +
+      '<div class="choices" role="group" aria-labelledby="q">' +
       choice('8', state.notSure ? '' : state.option, 'opt.8', 'opt.8.sub', 'option') +
       choice('graduated', state.notSure ? '' : state.option, 'opt.graduated', 'opt.graduated.sub', 'option') +
       choice('notSure', state.notSure ? 'notSure' : '', 'opt.notSure', 'opt.notSure.sub', 'option') +
@@ -318,7 +329,7 @@
     if (state.notSure) {
       html += '<div class="note" id="not-sure-note"><h3>' + esc(t('notSure.title')) + '</h3><p>' +
         esc(t('notSure.body')) + '</p><p><strong>' + esc(t('notSure.pick')) + '</strong></p>' +
-        '<div class="choices cols-2">' +
+        '<div class="choices cols-2" role="group" aria-label="' + esc(t('notSure.pick')) + '">' +
         choice('8', state.option, 'opt.8', null, 'optionAfter') +
         choice('graduated', state.option, 'opt.graduated', null, 'optionAfter') +
         '</div></div>';
@@ -331,7 +342,7 @@
     for (var y = RULES.firstYear; y <= THIS_YEAR + 1; y++) {
       years += '<option value="' + y + '"' + (y === state.year ? ' selected' : '') + '>' + y + '</option>';
     }
-    var html = '<h2 class="q" id="q">' + esc(t('q.period')) + '</h2>' +
+    var html = heading(t('q.period')) +
       explain('q.period.help') +
       '<div class="field-group"><label class="small-label" for="year">' + esc(t('label.year')) + '</label>' +
       '<select id="year" class="big">' + years + '</select></div>' +
@@ -351,9 +362,9 @@
     if (state.option === '8') helps.push('q.incomeType.help8');
     else helps.push('note.mixedGraduated');
     return '<span class="section-tag">' + esc(t('section.1701Q')) + '</span>' +
-      '<h2 class="q" id="q">' + esc(t('q.incomeType')) + '</h2>' +
+      heading(t('q.incomeType')) +
       explain(helps) +
-      '<div class="choices">' +
+      '<div class="choices" role="group" aria-labelledby="q">' +
       choice('pure', state.incomeType, 'opt.pure', 'opt.pure.sub', 'incomeType') +
       choice('mixed', state.incomeType, 'opt.mixed', 'opt.mixed.sub', 'incomeType') +
       '</div>' + errorHtml() + nav();
@@ -361,9 +372,9 @@
 
   function renderDeduction() {
     return '<span class="section-tag">' + esc(t('section.1701Q')) + '</span>' +
-      '<h2 class="q" id="q">' + esc(t('q.deduction')) + '</h2>' +
+      heading(t('q.deduction')) +
       explain('q.deduction.help') +
-      '<div class="choices">' +
+      '<div class="choices" role="group" aria-labelledby="q">' +
       choice('itemized', state.deduction, 'opt.itemized', 'opt.itemized.sub', 'deduction') +
       choice('osd', state.deduction, 'opt.osd', 'opt.osd.sub', 'deduction') +
       '</div>' + errorHtml() + nav();
@@ -378,12 +389,13 @@
     var raw = state.raw[id] !== undefined ? state.raw[id] : '';
     var isLast = steps()[steps().indexOf(id) + 1] === 'results';
     return '<span class="section-tag">' + esc(t('section.' + f.form)) + '</span>' +
-      '<label class="field-label" id="q" for="amount">' + esc(t(f.label, { year: state.year })) + '</label>' +
-      (hint ? '<p class="hint">' + esc(hint) + '</p>' : '') +
-      (!f.required ? '<p class="hint">' + esc(t('optionalHint')) + '</p>' : '') +
+      '<h2 class="q" id="q" tabindex="-1"><label class="field-label" for="amount">' + esc(t(f.label, { year: state.year })) + '</label></h2>' +
+      (hint ? '<p class="hint" id="hint1">' + esc(hint) + '</p>' : '') +
+      (!f.required ? '<p class="hint" id="hint2">' + esc(t('optionalHint')) + '</p>' : '') +
       '<div class="money"><span aria-hidden="true">₱</span>' +
       '<input id="amount" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="next" ' +
-      'aria-describedby="err" placeholder="0.00" value="' + esc(raw) + '"' +
+      'aria-describedby="' + ['err', hint ? 'hint1' : '', !f.required ? 'hint2' : ''].join(' ').trim() + '"' +
+      (f.required ? ' aria-required="true"' : '') + ' placeholder="0.00" value="' + esc(raw) + '"' +
       (state.error ? ' aria-invalid="true"' : '') + '></div>' +
       errorHtml() +
       explain(f.help) +
@@ -399,7 +411,7 @@
   function renderResults() {
     var all = computeAll();
     var r = all.r;
-    var html = '<h2 class="q" id="q">' + esc(t('res.title')) + '</h2>';
+    var html = heading(t('res.title'));
     var introBits = [qLabel(state.quarter) + ' ' + state.year, optionLabel()];
     if (r.has1701Q && state.incomeType) introBits.push(t('opt.' + state.incomeType));
     if (r.has1701Q && state.option === 'graduated' && state.deduction) introBits.push(state.deduction === 'osd' ? 'OSD' : t('opt.itemized'));
@@ -435,16 +447,17 @@
       '<div class="val">' + esc(peso(total)) + '</div><div class="sub">' + esc(t('total.help')) + '</div></div>';
 
     // eBIRForms summary
-    html += '<div class="result-card ebir" id="ebir"><h3 style="margin-top:0">' + esc(t('ebir.title')) + '</h3>' +
+    html += '<div class="result-card ebir" id="ebir"><h3>' + esc(t('ebir.title')) + '</h3>' +
       '<p class="hint">' + esc(t('ebir.help')) + '</p>';
     ebirModel(all).forEach(function (form) {
-      html += '<h3>' + esc(form.title) + '</h3><table><thead><tr><th scope="col">' + esc(t('ebir.col.item')) +
-        '</th><th scope="col">' + esc(t('ebir.col.what')) + '</th><th scope="col">' + esc(t('ebir.col.enter')) + '</th></tr></thead><tbody>';
+      html += '<h4>' + esc(form.title) + '</h4><table role="table" aria-label="' + esc(form.title) + '"><thead role="rowgroup"><tr role="row">' +
+        '<th scope="col" role="columnheader">' + esc(t('ebir.col.item')) + '</th><th scope="col" role="columnheader">' + esc(t('ebir.col.what')) +
+        '</th><th scope="col" role="columnheader">' + esc(t('ebir.col.enter')) + '</th></tr></thead><tbody role="rowgroup">';
       form.rows.forEach(function (row) {
-        if (row.group) { html += '<tr class="group"><td colspan="3">' + esc(row.group) + '</td></tr>'; return; }
+        if (row.group) { html += '<tr class="group" role="row"><td colspan="3" role="cell">' + esc(row.group) + '</td></tr>'; return; }
         var long = String(row.value).length > 16;
-        html += '<tr><td class="item">' + (row.plain ? esc(row.item) : itemHtml(row.item)) + '</td><td class="what">' + esc(row.what) +
-          '</td><td class="val' + (long ? ' long' : '') + (row.strong ? ' strong' : '') + '">' + esc(row.value) + '</td></tr>';
+        html += '<tr role="row"><td class="item" role="cell">' + (row.plain ? esc(row.item) : itemHtml(row.item)) + '</td><td class="what" role="cell">' + esc(row.what) +
+          '</td><td class="val' + (long ? ' long' : '') + (row.strong ? ' strong' : '') + '" role="cell">' + esc(row.value) + '</td></tr>';
       });
       html += '</tbody></table>';
     });
@@ -453,13 +466,14 @@
     // Deadlines
     html += '<div class="result-card" id="deadlines"><h3>' + esc(t('dl.title')) + '</h3><ul class="deadlines">' +
       deadlineModel().map(function (d) {
-        return '<li><span>' + esc(d.label) + '</span>' + (d.date ? '<strong>' + esc(d.date) + '</strong>' : '') + '</li>';
+        return '<li><span>' + esc(d.label) + '</span>' + (d.date ? '<strong>' + esc(d.date) + '</strong>' : '') +
+          (d.weekend ? '<span class="weekend">' + esc(t('dl.weekend', { day: t(d.weekend) })) + '</span>' : '') + '</li>';
       }).join('') + '</ul>' + explain('dl.help') + '</div>';
 
-    html += '<div id="copy-area"><button type="button" class="btn primary" style="width:100%" data-action="copy">' +
+    html += '<div id="copy-area"><button type="button" class="btn primary full" data-action="copy">' +
       esc(t('btn.copy')) + '</button><p class="copy-status" id="copy-status" role="status"></p></div>';
     html += '<div class="nav"><button type="button" class="btn secondary" data-action="back">' + esc(t('btn.back')) + '</button>' +
-      '<button type="button" class="btn secondary" style="flex:1" data-action="start-over">' + esc(t('btn.startOver')) + '</button></div>';
+      '<button type="button" class="btn secondary grow" data-action="start-over">' + esc(t('btn.startOver')) + '</button></div>';
     return html;
   }
 
@@ -500,27 +514,39 @@
         });
       });
       lines.push('', t('dl.title').toUpperCase());
-      deadlineModel().forEach(function (d) { lines.push('  ' + d.label + (d.date ? ': ' + d.date : '')); });
+      deadlineModel().forEach(function (d) {
+        lines.push('  ' + d.label + (d.date ? ': ' + d.date : ''));
+        if (d.weekend) lines.push('    ' + t('dl.weekend', { day: t(d.weekend) }));
+      });
       lines.push('');
     }
     lines.push(t('footer.disclaimer'), RULES.asOf[lang], 'instagram.com/missniceph');
     return lines.join('\n');
   }
 
+  var lastProgress = '';
   function renderProgress() {
     var list = steps();
     var el = document.getElementById('progress');
+    var live = document.getElementById('progress-live');
     var i = list.indexOf(state.step);
     var known = list[list.length - 1] === 'results';
-    if (!known || state.step === 'results') { el.innerHTML = ''; return; }
+    var text = (!known || state.step === 'results') ? '' : t('progress', { n: i + 1, total: list.length });
+    if (text === lastProgress) return;
+    lastProgress = text;
+    live.textContent = text;
+    if (!text) { el.innerHTML = ''; return; }
     var pct = Math.round(((i + 1) / list.length) * 100);
-    el.innerHTML = esc(t('progress', { n: i + 1, total: list.length })) +
+    el.innerHTML = '<span aria-hidden="true">' + esc(text) + '</span>' +
       '<div class="bar" aria-hidden="true"><span style="width:' + pct + '%"></span></div>';
   }
 
   function renderChrome() {
     document.documentElement.lang = lang === 'fil' ? 'fil' : 'en';
     document.getElementById('banner').textContent = t('banner');
+    document.getElementById('banner-region').setAttribute('aria-label', t('banner.label'));
+    document.getElementById('skip-link').textContent = t('skip');
+    document.title = t('app.title') + ' \u00b7 ' + t('app.titleSuffix');
     document.getElementById('app-title').textContent = t('app.title');
     document.getElementById('app-by').textContent = t('app.by');
     document.getElementById('tagline').textContent = t('app.tagline');
@@ -536,15 +562,21 @@
       '<p>' + esc(RULES.asOf[lang]) + '</p>' +
       '<p>' + esc(t('footer.sources')) + ':</p><ul>' +
       '<li>TRAIN Law (Republic Act No. 10963)</li><li>Revenue Memorandum Circular (RMC) No. 26-2018</li>' +
-      '<li>RMC No. 32-2018</li><li>RMC No. 69-2023</li></ul>' +
+      '<li>RMC No. 32-2018</li><li>RMC No. 69-2023</li>' +
+      '<li>' + esc(t('footer.rr82018')) + '</li></ul>' +
       '<p>' + esc(t('footer.made')) + ' · <a href="https://instagram.com/missniceph" target="_blank" rel="noopener noreferrer">' +
       esc(t('footer.follow')) + '</a></p>';
   }
 
+  var renderedStep = null;
   function render(focus) {
     renderChrome();
     renderProgress();
     var s = state.step;
+    var openDetails = [];
+    if (renderedStep === s) {
+      Array.prototype.forEach.call(screen.querySelectorAll('details'), function (d, i) { if (d.open) openDetails.push(i); });
+    }
     var html;
     if (s === 'option') html = renderOption();
     else if (s === 'period') html = renderPeriod();
@@ -553,10 +585,14 @@
     else if (s === 'results') html = renderResults();
     else html = renderField(s);
     screen.innerHTML = html;
+    renderedStep = s;
+    var details = screen.querySelectorAll('details');
+    openDetails.forEach(function (i) { if (details[i]) details[i].open = true; });
     if (focus) {
       var input = document.getElementById('amount');
+      var h = document.getElementById('q');
       if (input) input.focus();
-      else screen.focus({ preventScroll: true });
+      else if (h) h.focus({ preventScroll: true });
       window.scrollTo(0, 0);
     }
   }
@@ -620,6 +656,7 @@
     var hasData = Object.keys(state.raw).length > 0 || state.option || state.quarter;
     if (hasData && !window.confirm(t('confirm.startOver'))) return;
     state = freshState();
+    renderedStep = null;
     render(true);
   }
 

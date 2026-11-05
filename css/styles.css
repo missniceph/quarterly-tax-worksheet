@@ -75,12 +75,22 @@ button { font: inherit; color: inherit; }
 
 /* Banner — on every screen */
 .banner {
-  position: sticky; top: 0; z-index: 10;
+  position: sticky; top: 0; z-index: 10; margin: 0;
   background: var(--warn-bg); color: var(--warn-ink);
   border-bottom: 1px solid var(--warn-line);
   padding: 8px 16px; text-align: center;
   font-size: 14px; font-weight: 600; line-height: 1.4;
 }
+
+.banner p { margin: 0; }
+
+/* Skip link: hidden until focused with the keyboard */
+.skip {
+  position: absolute; left: 8px; top: -60px; z-index: 20;
+  background: var(--accent); color: var(--accent-ink); font-weight: 700;
+  padding: 10px 14px; border-radius: 8px; text-decoration: none;
+}
+.skip:focus { top: 8px; }
 
 /* Header */
 .top { padding: 14px 0 6px; }
@@ -116,6 +126,8 @@ button { font: inherit; color: inherit; }
   background: var(--accent-soft); color: var(--text); border-radius: 999px; padding: 4px 10px; margin-bottom: 10px;
 }
 .q { font-size: 21px; line-height: 1.3; margin: 0 0 10px; }
+.q:focus { outline: none; }
+h2.q label.field-label { margin: 0; }
 .hint { color: var(--muted); font-size: 15px; margin: 6px 0 0; }
 
 details.explain {
@@ -163,7 +175,7 @@ label.field-label { display: block; font-weight: 700; font-size: 19px; line-heig
   padding: 10px 14px;
 }
 .money input { padding-left: 42px; font-variant-numeric: tabular-nums; }
-.money input:focus, select.big:focus { border-color: var(--accent); outline: none; }
+.money input:focus, select.big:focus { border-color: var(--accent); }
 .money input[aria-invalid="true"] { border-color: var(--error); }
 .error { color: var(--error); font-weight: 600; margin: 8px 0 0; min-height: 1px; }
 .field-group { margin-bottom: 16px; }
@@ -197,7 +209,11 @@ label.field-label { display: block; font-weight: 700; font-size: 19px; line-heig
 .total .val { font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.2; }
 .total .sub { font-size: 13px; opacity: .9; }
 
-.ebir h3 { margin: 18px 0 6px; font-size: 16px; }
+.ebir h3 { margin: 0 0 4px; font-size: 18px; }
+.ebir h4 { margin: 18px 0 6px; font-size: 16px; }
+.btn.full { width: 100%; flex: none; }
+.btn.grow { flex: 1; }
+.weekend { display: block; width: 100%; font-size: 14px; color: var(--muted); }
 .ebir table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
 .ebir th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); padding: 6px 0; }
 .ebir td { border-top: 1px solid var(--line); padding: 8px 8px 8px 0; vertical-align: top; }
@@ -241,13 +257,15 @@ textarea.copy-fallback { width: 100%; min-height: 200px; margin-top: 10px; font:
   .brand h1 { font-size: 24px; }
 }
 @media (max-width: 420px) {
-  .choices.cols-2 { grid-template-columns: 1fr 1fr; }
   .brand h1 { font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
 }
 
 /* Printing: keep the "unofficial" banner, drop the buttons. */
 @media print {
-  .controls, .nav, .btn, .progress, #copy-area { display: none !important; }
+  .controls, .nav, .btn, .progress, #copy-area, .skip { display: none !important; }
   .banner { position: static; border: 2px solid #000; }
   .screen { box-shadow: none; }
 }
