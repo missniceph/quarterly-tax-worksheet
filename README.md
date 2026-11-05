@@ -98,14 +98,12 @@ Required examples covered by `npm test`:
 
 These show up on screen with a yellow **[confirm]** tag until you update `js/rules.js`.
 
-**BIR Form 1701Q (January 2018 ENCS): all item numbers**
-- Quarter
-- Income tax rate option (8% / graduated)
-- Method of deduction (itemized / OSD)
-- Schedule for graduated rates: gross sales/receipts, cost of sales/services, allowable expenses, OSD, other non-operating income, taxable income, tax due
-- Schedule for the 8% rate: gross sales/receipts, other non-operating income, ₱250,000 reduction, taxable income, tax due
-- Tax credits: tax paid in previous quarters, creditable tax withheld (2307), total tax credits/payments
-- Tax payable/(overpayment)
+**BIR Form 1701Q (January 2018 ENCS): page 2 schedule lines (Part V)**
+- Schedule I (graduated): gross sales/receipts, cost of sales/services, allowable expenses, OSD, other non-operating income, taxable income
+- Schedule II (8%): gross sales/receipts, other non-operating income, ₱250,000 reduction, taxable income
+- Schedule III (credits): tax paid in previous quarters, creditable tax withheld (2307)
+
+Already confirmed from page 1 of the 1701Q: Item 1 (year), Item 2 (quarter), Item 8 (ATC: II012/II014/II013 graduated, II015/II017/II016 8%), Item 16 (tax rate), Item 16A (method of deduction), Items 26–30 (Part III), plus Schedule I Item 46, Schedule II Item 54, Schedule III Item 62 and Item 63 as referenced on page 1.
 
 The 2551Q item numbers (Items 3, 13, Schedule 1 Items 1 and 7, Items 14, 15, 18, 19, 20–23 and 24) are already filled in.
 
