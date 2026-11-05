@@ -65,29 +65,51 @@
     },
 
     // ---------- Item numbers ----------
+    // Confirmed from page 1 of the form (Part I and Part III). Schedule lines
+    // on page 2 (Part V) are still [confirm].
     items1701Q: {
-      quarter: CONFIRM,
-      taxRateOption: CONFIRM,
-      deductionMethod: CONFIRM,
-      // Schedule for graduated rates
+      year: 'Item 1',
+      quarter: 'Item 2',
+      atc: 'Item 8',
+      taxRateOption: 'Item 16',
+      deductionMethod: 'Item 16A',
+      // Part V, Schedule I — graduated rates
       gradGrossSales: CONFIRM,
       gradCostOfSales: CONFIRM,
       gradExpenses: CONFIRM,
       gradOsd: CONFIRM,
       gradOtherIncome: CONFIRM,
       gradTaxableIncome: CONFIRM,
-      gradTaxDue: CONFIRM,
-      // Schedule for the 8% rate
+      gradTaxDue: 'Schedule I, Item 46',
+      // Part V, Schedule II — 8% rate
       eightGrossSales: CONFIRM,
       eightOtherIncome: CONFIRM,
       eightReduction: CONFIRM,
       eightTaxableIncome: CONFIRM,
-      eightTaxDue: CONFIRM,
-      // Tax credits
+      eightTaxDue: 'Schedule II, Item 54',
+      // Part V, Schedule III — tax credits/payments
       prevQuartersTax: CONFIRM,
       creditableWithheld: CONFIRM,
-      totalCredits: CONFIRM,
-      taxPayable: CONFIRM
+      totalCredits: 'Schedule III, Item 62',
+      taxPayableSchedule: 'Item 63',
+      // Part III — Total tax payable (page 1)
+      partIIITaxDue: 'Item 26',
+      partIIICredits: 'Item 27',
+      partIIITaxPayable: 'Item 28',
+      partIIIPenalties: 'Item 29',
+      partIIITotalPayable: 'Item 30'
+    },
+
+    // Item 8 ATC codes on the 1701Q, by income type and tax option.
+    atc1701Q: {
+      pure: {
+        graduated: [{ code: 'II012', kind: 'business' }, { code: 'II014', kind: 'profession' }],
+        '8':       [{ code: 'II015', kind: 'business' }, { code: 'II017', kind: 'profession' }]
+      },
+      mixed: {
+        graduated: [{ code: 'II013', kind: 'mixed' }],
+        '8':       [{ code: 'II016', kind: 'mixed' }]
+      }
     },
 
     items2551Q: {

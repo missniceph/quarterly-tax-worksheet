@@ -335,6 +335,32 @@
     'ebir.credits': { en: 'Tax credits/payments', fil: 'Tax credits/payments' },
     'ebir.totalCredits': { en: 'Total tax credits/payments', fil: 'Total tax credits/payments' },
     'ebir.taxPayable': { en: 'Tax payable/(overpayment)', fil: 'Tax payable/(overpayment)' },
+    'ebir.part1': { en: 'Part I \u00b7 Background information', fil: 'Part I \u00b7 Background information' },
+    'ebir.part3': { en: 'Part III \u00b7 Total tax payable (page 1)', fil: 'Part III \u00b7 Total tax payable (page 1)' },
+    'atc.business': { en: 'if business income', fil: 'kung kita sa negosyo' },
+    'atc.profession': { en: 'if income from profession', fil: 'kung kita sa propesyon' },
+    'atc.mixed': { en: 'mixed income', fil: 'mixed income' },
+    'atc.or': { en: ' or ', fil: ' o ' },
+    'ebir.1701.item26': {
+      en: 'Tax Due (from Schedule I Item 46 or Schedule II Item 54)',
+      fil: 'Tax Due (galing sa Schedule I Item 46 o Schedule II Item 54)'
+    },
+    'ebir.1701.item27': {
+      en: 'Less: Tax Credits/Payments (from Schedule III Item 62)',
+      fil: 'Bawas: Tax Credits/Payments (galing sa Schedule III Item 62)'
+    },
+    'ebir.1701.item28': {
+      en: 'Tax Payable/(Overpayment) = Item 26 \u2212 Item 27',
+      fil: 'Tax Payable/(Overpayment) = Item 26 \u2212 Item 27'
+    },
+    'ebir.1701.penalties.note': {
+      en: 'Leave blank if filing on time. If late, ask your RDO.',
+      fil: 'Iwanang blangko kung on time ang pag-file. Kung late, magtanong sa RDO mo.'
+    },
+    'ebir.1701.item30': {
+      en: 'Total Amount Payable/(Overpayment) (same as Item 28 if filing on time)',
+      fil: 'Total Amount Payable/(Overpayment) (pareho sa Item 28 kung on time ang pag-file)'
+    },
     'ebir.attach': { en: 'Attachment', fil: 'Attachment' },
     'ebir.attach.2307': {
       en: 'BIR Form 2307 (if you have any)',

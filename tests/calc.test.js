@@ -141,3 +141,17 @@ test('2551Q item numbers match the confirmed list', () => {
   assert.equal(RULES.items2551Q.totalAmountPayable, 'Item 24');
   assert.equal(RULES.percentageTax.atc, 'PT 010');
 });
+
+test('1701Q item numbers confirmed from page 1 of the form', () => {
+  const I = RULES.items1701Q;
+  assert.equal(I.year, 'Item 1');
+  assert.equal(I.quarter, 'Item 2');
+  assert.equal(I.atc, 'Item 8');
+  assert.equal(I.taxRateOption, 'Item 16');
+  assert.equal(I.deductionMethod, 'Item 16A');
+  assert.equal(I.partIIITaxDue, 'Item 26');
+  assert.equal(I.partIIITaxPayable, 'Item 28');
+  assert.equal(I.partIIITotalPayable, 'Item 30');
+  assert.deepEqual(RULES.atc1701Q.mixed['8'].map((x) => x.code), ['II016']);
+  assert.deepEqual(RULES.atc1701Q.pure.graduated.map((x) => x.code), ['II012', 'II014']);
+});

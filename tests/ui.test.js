@@ -44,7 +44,11 @@ const scenarios = [
       assert.equal(await page.$('#res-2551'), null, '8% must not show 2551Q');
       assert.match(await page.textContent('#total'), /₱32,000\.00/);
       assert.match(await page.textContent('#deadlines'), /August 15, 2026/);
-      assert.match(await page.textContent('#ebir'), /\[confirm\]/);
+      const e1 = await page.textContent('#ebir');
+      assert.match(e1, /\[confirm\]/);
+      assert.match(e1, /II015.*II017/);
+      assert.match(e1, /Item 16A|Item 16/);
+      assert.match(e1, /Item 28/);
     }
   },
   {
@@ -117,6 +121,7 @@ const scenarios = [
       await amount(page, '');
       await amount(page, '');
       assert.match(await page.textContent('#res-1701'), /₱24,000\.00/);
+      assert.match(await page.textContent('#ebir'), /II016/);
       // switch language on the results screen
       await page.click('[data-lang="fil"]');
       assert.match(await page.textContent('#screen'), /Ang resulta mo/);

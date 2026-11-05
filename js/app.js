@@ -175,8 +175,14 @@
 
     if (all.c1701) {
       var c = all.c1701;
+      var atcs = RULES.atc1701Q[state.incomeType][state.option].map(function (x) {
+        return x.code + ' (' + t('atc.' + x.kind) + ')';
+      }).join(t('atc.or'));
       var rows = [
+        { group: t('ebir.part1') },
+        { item: I1.year, what: t('label.year'), value: String(state.year) },
         { item: I1.quarter, what: t('ebir.quarter'), value: qLabel(q) },
+        { item: I1.atc, what: 'ATC', value: atcs },
         { item: I1.taxRateOption, what: t('ebir.taxRate'),
           value: q === 1 ? t('ebir.taxRate.q1.' + state.option) : t('ebir.taxRate.later', { option: optionLabel() }) }
       ];
@@ -208,8 +214,14 @@
       if (q > 1) rows.push({ item: I1.prevQuartersTax, what: t('row.prevTax'), value: peso(c.prevQuartersTax) });
       rows.push({ item: I1.creditableWithheld, what: t('row.cwt1701'), value: peso(c.creditableWithheld) });
       rows.push({ item: I1.totalCredits, what: t('ebir.totalCredits'), value: peso(c.totalCredits) });
-      rows.push({ item: I1.taxPayable, what: t('ebir.taxPayable'), value: pesoParens(c.net), strong: true });
-      if (c.creditableWithheld > 0) rows.push({ item: t('ebir.attach'), what: t('ebir.attach.2307'), value: '✓', plain: true });
+      rows.push({ item: I1.taxPayableSchedule, what: t('ebir.taxPayable'), value: pesoParens(c.net) });
+      rows.push({ group: t('ebir.part3') });
+      rows.push({ item: I1.partIIITaxDue, what: t('ebir.1701.item26'), value: peso(c.taxDue) });
+      rows.push({ item: I1.partIIICredits, what: t('ebir.1701.item27'), value: peso(c.totalCredits) });
+      rows.push({ item: I1.partIIITaxPayable, what: t('ebir.1701.item28'), value: pesoParens(c.net), strong: true });
+      rows.push({ item: I1.partIIIPenalties, what: t('ebir.penalties'), value: t('ebir.1701.penalties.note') });
+      rows.push({ item: I1.partIIITotalPayable, what: t('ebir.1701.item30'), value: pesoParens(c.net), strong: true });
+      if (c.creditableWithheld > 0) rows.push({ item: t('ebir.attach'), what: t('ebir.attach.2307'), value: '\u2713', plain: true });
       forms.push({ title: t('ebir.1701.title'), rows: rows });
     }
 
